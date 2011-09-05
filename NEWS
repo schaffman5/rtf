@@ -1,0 +1,7 @@
+CHANGES IN 0.4.0 (2011-09-04)
+-----------------------------
+Submission to CRAN
+
+CHANGES IN 0.4.1 (2011-09-04)
+-----------------------------
+Added license file and fixed an in appropriate is.nan call on a data frame.
