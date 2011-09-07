@@ -4,33 +4,20 @@
 # @alias view
 # @alias addTable
 # @alias done
+# @alias addPageBreak
+# @alias startParagraph
+# @alias endParagraph
+# @alias addHeader
+# @alias addParagraph
+# @alias addText
+# @alias addNewLine
+# @alias decreaseIndent
+# @alias increaseIndent
+# @alias setFontSize
+# @alias addPlot
+# @alias addTrellisObject
 #
-# @alias addHeader 
-# @alias addNewLine 
-# @alias addPageBreak 
-# @alias addParagraph 
-# @alias addPlot 
-# @alias addText 
-# @alias addTrellisObject 
-# @alias decreaseIndent 
-# @alias endParagraph 
-# @alias increaseIndent 
-# @alias setFontSize 
-# @alias startParagraph 
-#
-# @alias addHeader.RTF 
-# @alias addNewLine.RTF 
-# @alias addPageBreak.RTF 
-# @alias addParagraph.RTF 
-# @alias addPlot.RTF 
-# @alias addText.RTF 
-# @alias addTrellisObject.RTF 
-# @alias decreaseIndent.RTF 
-# @alias endParagraph.RTF 
-# @alias increaseIndent.RTF 
-# @alias setFontSize.RTF 
-# @alias startParagraph.RTF 
-#
+# @alias rtf.forest.plot.xscale
 #
 #
 # \description{

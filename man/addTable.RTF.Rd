@@ -13,10 +13,10 @@
 \alias{addTable,RTF-method}
 
 
- \title{Add a table to the RTF document}
+ \title{Insert a table into the RTF document}
 
  \description{
-	Add a table to the RTF document.
+	Insert a table into the RTF document.
  }
 
  \usage{\method{addTable}{RTF}(this, dat, col.widths=NULL, font.size=NULL, row.names=FALSE, NA.string="-", ...)}
@@ -24,15 +24,11 @@
  \arguments{
  	\item{this}{An RTF object.}
  	\item{dat}{A matrix, data frame, or table.}
-	\item{col.widths}{A \code{\link[base]{vector}} of column widths in inches \bold{optional}.}
-	\item{font.size}{Font size in points \bold{optional}.}
-	\item{row.names}{Boolean argument to include row names in tables \bold{optional}.}
-	\item{NA.string}{A character to replace NA values in the table.}
+	\item{col.widths}{A \code{\link[base]{vector}} of column widths in inches. \bold{optional}.}
+	\item{font.size}{Font size in points. \bold{optional}.}
+	\item{row.names}{Boolean argument to include row names in tables. \bold{optional}.}
+	\item{NA.string}{A character string to replace NA values in the table.}
  	\item{...}{Not used.}
- }
-
- \value{
- 	The new name (invisible).
  }
 
  \examples{

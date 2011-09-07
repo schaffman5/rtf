@@ -17,10 +17,10 @@
 # Windows OS.
 # 
 # This package is written in pure R and does not require leaving the R
-# environment to write files. Data frames are converted to RTF tables and
-# formatted as stored.  One important limitation of the RTF specification
-# is that vector graphics output is limited to Windows Meta File (WMF) and
-# Enhanced Meta File (EMF) formats.  Because these formats are not
+# environment to write files. R data frames and table objects are converted to
+# nicely formatted RTF tables.  One important limitation of the RTF 
+# specification is that vector graphics output is limited to Windows Meta File
+# (WMF) and Enhanced Meta File (EMF) formats.  Because these formats are not
 # supported across platforms, this package currently only supports RTF
 # embedding of PNG plots and images.  To ensure high quality reports, the
 # resolution may be specified when writing the RTF output.
@@ -28,6 +28,10 @@
 #
 # \section{Requirements}{
 #   This package depends on the \pkg{R.oo} package.
+# }
+#
+# \section{Usage}{
+#   For usage details @see "RTF".
 # }
 #
 # @author

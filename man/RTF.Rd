@@ -46,20 +46,20 @@ extends \link[R.oo]{Object}\cr
  \section{Fields and Methods}{
  	\bold{Methods:}\cr
 \tabular{rll}{
- \tab \code{addHeader} \tab  -\cr
- \tab \code{addNewLine} \tab  -\cr
- \tab \code{addPageBreak} \tab  -\cr
- \tab \code{addParagraph} \tab  -\cr
- \tab \code{addPlot} \tab  -\cr
- \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Add a table to the RTF document.\cr
- \tab \code{addText} \tab  -\cr
- \tab \code{addTrellisObject} \tab  -\cr
- \tab \code{decreaseIndent} \tab  -\cr
+ \tab \code{\link[rtf:addHeader.RTF]{addHeader}} \tab Insert a header into the RTF document.\cr
+ \tab \code{\link[rtf:addNewLine.RTF]{addNewLine}} \tab Insert a new line into the RTF document.\cr
+ \tab \code{\link[rtf:addPageBreak.RTF]{addPageBreak}} \tab Insert a page break into the RTF document optionally specifying new page settings.\cr
+ \tab \code{\link[rtf:addParagraph.RTF]{addParagraph}} \tab Insert a paragraph into the RTF document.\cr
+ \tab \code{\link[rtf:addPlot.RTF]{addPlot}} \tab Insert a plot into the RTF document.\cr
+ \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Insert a table into the RTF document.\cr
+ \tab \code{\link[rtf:addText.RTF]{addText}} \tab Insert text into the RTF document.\cr
+ \tab \code{\link[rtf:addTrellisObject.RTF]{addTrellisObject}} \tab Insert a trellis plot object into the RTF document.\cr
+ \tab \code{\link[rtf:decreaseIndent.RTF]{decreaseIndent}} \tab Decrease RTF document indent.\cr
  \tab \code{\link[rtf:done.RTF]{done}} \tab Write and close the RTF output.\cr
- \tab \code{endParagraph} \tab  -\cr
- \tab \code{increaseIndent} \tab  -\cr
- \tab \code{setFontSize} \tab  -\cr
- \tab \code{startParagraph} \tab  -\cr
+ \tab \code{\link[rtf:endParagraph.RTF]{endParagraph}} \tab End a paragraph in the RTF document.\cr
+ \tab \code{\link[rtf:increaseIndent.RTF]{increaseIndent}} \tab Increase RTF document indent.\cr
+ \tab \code{\link[rtf:setFontSize.RTF]{setFontSize}} \tab Set RTF document font size.\cr
+ \tab \code{\link[rtf:startParagraph.RTF]{startParagraph}} \tab Start a new paragraph in the RTF document.\cr
  \tab \code{\link[rtf:view.RTF]{view}} \tab View encoded RTF.\cr
 }
 

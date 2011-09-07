@@ -106,7 +106,7 @@ setConstructorS3("RTF",
 ###########################################################################/**
 # @RdocMethod addTable
 #
-# @title "Add a table to the RTF document"
+# @title "Insert a table into the RTF document"
 #
 # \description{
 #	@get "title".
@@ -117,15 +117,11 @@ setConstructorS3("RTF",
 # \arguments{
 # 	\item{this}{An RTF object.}
 # 	\item{dat}{A matrix, data frame, or table.}
-#	\item{col.widths}{A @vector of column widths in inches \bold{optional}.}
-#	\item{font.size}{Font size in points \bold{optional}.}
-#	\item{row.names}{Boolean argument to include row names in tables \bold{optional}.}
-#	\item{NA.string}{A character to replace NA values in the table.}
+#	\item{col.widths}{A @vector of column widths in inches. \bold{optional}.}
+#	\item{font.size}{Font size in points. \bold{optional}.}
+#	\item{row.names}{Boolean argument to include row names in tables. \bold{optional}.}
+#	\item{NA.string}{A character string to replace NA values in the table.}
 # 	\item{...}{Not used.}
-# }
-#
-# \value{
-# 	The new name (invisible).
 # }
 #
 # \examples{
@@ -210,6 +206,31 @@ setMethodS3("done", "RTF", function(this, ...) {
 	write(this$.rtf,this$.file)
 })
 
+#########################################################################/**
+# @RdocMethod addHeader
+#
+# @title "Insert a header into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+#   \item{title}{Header title text.}
+#   \item{subtitle}{Header subtitle text. \bold{optional}.}
+#	\item{font.size}{Font size in points. \bold{optional}.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NULL,...) {
 	if(is.null(font.size)) {
 		font.size = this$.font.size  # default
@@ -218,11 +239,55 @@ setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NUL
 	this$.rtf <- paste(this$.rtf,.add.header(title,subtitle=subtitle,indent=this$.indent,font.size=font.size),sep="")
 })
 
+#########################################################################/**
+# @RdocMethod addText
+#
+# @title "Insert text into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{A character @vector of text to add.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("addText", "RTF", function(this, ...) {
 	text<-paste(... , sep="")
 	this$.rtf <- paste(this$.rtf,.add.text(text),sep="")
 })
 
+#########################################################################/**
+# @RdocMethod addParagraph
+#
+# @title "Insert a paragraph into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{A character @vector of text to add.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("addParagraph", "RTF", function(this, ...) {
 	text<-paste(... , sep="")
 	
@@ -235,41 +300,287 @@ setMethodS3("addParagraph", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
 })
 
+#########################################################################/**
+# @RdocMethod startParagraph
+#
+# @title "Start a new paragraph in the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("startParagraph", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.start.paragraph(indent=this$.indent),sep="")
 })
 
+#########################################################################/**
+# @RdocMethod endParagraph
+#
+# @title "End a paragraph in the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("endParagraph", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
 })
 
+###########################################################################/**
+# @RdocMethod addPageBreak
+#
+# @title "Insert a page break into the RTF document optionally specifying new page settings"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{width}{New page width in inches. \bold{optional}.}
+# 	\item{height}{New page height in inches. \bold{optional}.}
+# 	\item{font.size}{New default font size in points. \bold{optional}.}
+# 	\item{omi}{A @vector of page margins (botton, left, top, right) \bold{optional}.}
+# 	\item{...}{Not used.}
+# }
+#
+# \examples{
+# rtf<-RTF("test.rtf.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# addPageBreak(rtf,width=11,height=8.5,omi=c(0.5,0.5,0.5,0.5))
+# done(rtf)
+# }
+#
+# @author
+#
+# \seealso{
+# 	@seeclass
+# }
+#*/###########################################################################
 setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,1,1), ...) {
 	this$.rtf <- paste(this$.rtf,.add.page.break(width=width,height=height,omi=omi),sep="")
 })
 
+#########################################################################/**
+# @RdocMethod addNewLine
+#
+# @title "Insert a new line into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("addNewLine", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.add.newline(),sep="")
 })
 
-setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0.3,res=300, ...) {
-	this$.rtf <- paste(this$.rtf,.rtf.plot(plot.fun=plot.fun,file="tmp.png",width=width,height=height,res=res, ...),sep="")
-})
-
-setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,height=0.3,res=300, ...) {
-	this$.rtf <- paste(this$.rtf,.rtf.trellis.object(trellis.object=trellis.object,file="tmp.png",width=width,height=height,res=res),sep="")
-})
-
+#########################################################################/**
+# @RdocMethod increaseIndent
+#
+# @title "Increase RTF document indent"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("increaseIndent", "RTF", function(this, ...) {
 	this$.indent <- this$.indent + 720 # 1/2" increments
 })
 
+#########################################################################/**
+# @RdocMethod decreaseIndent
+#
+# @title "Decrease RTF document indent"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("decreaseIndent", "RTF", function(this, ...) {
 	this$.indent <- max(0,this$.indent - 720) # 1/2" increments
 })
 
+#########################################################################/**
+# @RdocMethod setFontSize
+#
+# @title "Set RTF document font size"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{font.size}{New default font size in points.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
 setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 	this$.font.size <- font.size
 })
+
+#########################################################################/**
+# @RdocMethod addPlot
+#
+# @title "Insert a plot into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{plot.fun}{Plot function.}
+# 	\item{width}{Plot output width in inches.}
+# 	\item{height}{Plot output height in inches.}
+# 	\item{res}{Output resolution in dots per inch.}
+# 	\item{...}{Arguments for \code{plot.fun}.}
+# }
+#
+# \details{
+# 	Plots are added to the document as PNG objects.
+# }
+#
+# \examples{
+# rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
+# done(rtf)
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
+setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0.3,res=300, ...) {
+	this$.rtf <- paste(this$.rtf,.rtf.plot(plot.fun=plot.fun,file="tmp.png",width=width,height=height,res=res, ...),sep="")
+})
+
+#########################################################################/**
+# @RdocMethod addTrellisObject
+#
+# @title "Insert a trellis plot object into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{trellis.object}{The trellis plot object.}
+# 	\item{width}{Plot output width in inches.}
+# 	\item{height}{Plot output height in inches.}
+# 	\item{res}{Output resolution in dots per inch.}
+# 	\item{...}{Not used.}
+# }
+#
+# \details{
+# 	Plots are added to the document as PNG objects.  Multipage trellis objects are 
+#	spread across multiple pages in the RTF output file.
+# }
+#
+# \examples{
+# \dontrun{
+# rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# if(require(lattice)) {
+# 	# multipage trellis object
+# 	p2<-xyplot(uptake ~ conc | Plant, CO2, layout = c(2,2))
+# 	addTrellisObject(rtf,trellis.object=p2,width=6,height=6,res=png.res)
+# }
+# done(rtf)
+# }}
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
+setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,height=0.3,res=300, ...) {
+	this$.rtf <- paste(this$.rtf,.rtf.trellis.object(trellis.object=trellis.object,file="tmp.png",width=width,height=height,res=res),sep="")
+})
+
+
+
 
 ######################################################################################
 
