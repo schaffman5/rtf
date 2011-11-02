@@ -51,6 +51,7 @@ extends \link[R.oo]{Object}\cr
  \tab \code{\link[rtf:addPageBreak.RTF]{addPageBreak}} \tab Insert a page break into the RTF document optionally specifying new page settings.\cr
  \tab \code{\link[rtf:addParagraph.RTF]{addParagraph}} \tab Insert a paragraph into the RTF document.\cr
  \tab \code{\link[rtf:addPlot.RTF]{addPlot}} \tab Insert a plot into the RTF document.\cr
+ \tab \code{\link[rtf:addSessionInfo.RTF]{addSessionInfo}} \tab Insert session information into the RTF document.\cr
  \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Insert a table into the RTF document.\cr
  \tab \code{\link[rtf:addText.RTF]{addText}} \tab Insert text into the RTF document.\cr
  \tab \code{\link[rtf:addTrellisObject.RTF]{addTrellisObject}} \tab Insert a trellis plot object into the RTF document.\cr
@@ -70,9 +71,7 @@ extends \link[R.oo]{Object}\cr
  }
 
  \examples{
- \dontrun{
-
- output<-"test.rtf.doc"
+ output<-"test_RTF-class.doc"
  png.res<-300
 
  rtf<-RTF(output,width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
@@ -80,7 +79,7 @@ extends \link[R.oo]{Object}\cr
  addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
 
  # Try trellis plots
- if(require(lattice)) {
+ if(require(lattice) & require(grid)) {
  	# single page trellis objects
  	addPageBreak(rtf, width=11,height=8.5,omi=c(0.5,0.5,0.5,0.5))
 
@@ -96,17 +95,12 @@ extends \link[R.oo]{Object}\cr
  }
 
  addPageBreak(rtf, width=6,height=10,omi=c(0.5,0.5,0.5,0.5))
- addTable(rtf,as.data.frame(head(iris)),font.size=10,row.names=FALSE,NA.string="-",
-          col.widths=rep(1,5))
+ addTable(rtf,as.data.frame(head(iris)),font.size=10,row.names=FALSE,NA.string="-")
 
- tab<-table(iris$Species,floor(iris$Sepal.Length))
- names(dimnames(tab))<-c("Species","Sepal Length")
- addParagraph(rtf,"\n\nHere's a new paragraph with another table:\n")
- addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-",
-          col.widths=c(1,rep(0.5,4)) )
+ addSessionInfo(rtf)
 
  done(rtf)
- }}
+ }
 
  \author{Michael E. Schaffer}
 

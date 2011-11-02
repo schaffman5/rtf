@@ -61,7 +61,7 @@
  tab<-rbind(tab,list("","","","",xscale))
 
  # write the RTF output
- rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+ rtf<-RTF("test_rtf.forest.plot.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
  addTable(rtf,tab,col.widths=c(0.75,0.75,0.75,0.75,3))
  done(rtf)
  }

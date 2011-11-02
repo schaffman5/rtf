@@ -19,11 +19,13 @@
 	Insert text into the RTF document.
  }
 
- \usage{\method{addText}{RTF}(this, ...)}
+ \usage{\method{addText}{RTF}(this, ..., bold=FALSE, italic=FALSE)}
 
  \arguments{
  	\item{this}{An RTF object.}
- 	\item{...}{A character \code{\link[base]{vector}} of text to add.}
+ 	\item{bold}{Bold text. \bold{optional}.}
+ 	\item{italic}{Italic text. \bold{optional}.}
+ 	\item{...}{Any number of character strings to concatenate.}
  }
 
  \author{Michael E. Schaffer}

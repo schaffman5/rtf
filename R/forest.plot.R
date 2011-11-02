@@ -52,7 +52,7 @@
 # tab<-rbind(tab,list("","","","",xscale))
 #
 # # write the RTF output
-# rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# rtf<-RTF("test_rtf.forest.plot.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
 # addTable(rtf,tab,col.widths=c(0.75,0.75,0.75,0.75,3))
 # done(rtf)
 # }
@@ -61,12 +61,23 @@
 #*/#########################################################################
 rtf.forest.plot<-function(x=1.25,min=0.5,max=2,xlim=c(0.1,12),
 	width=3.0,height=0.3,cex=1,lwd=0.75,res=300) {
-	.rtf.plot(.forest.plot,width=width,height=height,res=res,x=x,min=min,max=max,xlim=xlim,cex=cex,lwd=lwd)
+	
+	tmp.file<-tempfile("temp_forest_plot")
+	ret<-.rtf.plot(.forest.plot,tmp.file=tmp.file,width=width,height=height,res=res,x=x,min=min,max=max,xlim=xlim,cex=cex,lwd=lwd)
+	if(file.exists(tmp.file) ) {
+		unlink(tmp.file)
+	}
+	ret
 }
 
 rtf.forest.plot.xscale<-function(xlim=c(0.1,12),
 	width=3.0,height=0.3,cex=1,lwd=0.75,res=300) {
-	.rtf.plot(.forest.plot.scale,width=width,height=height,res=res,xlim=xlim,cex=cex,lwd=lwd)
+	tmp.file<-tempfile("temp_forest_xscale")
+	ret<-.rtf.plot(.forest.plot.scale,tmp.file=tmp.file,width=width,height=height,res=res,xlim=xlim,cex=cex,lwd=lwd)
+	if(file.exists(tmp.file) ) {
+		unlink(tmp.file)
+	}
+	ret
 }
 
 ######################################################################################

@@ -13,6 +13,7 @@
 ##                                                                                       #
 ## For details about the RTF format (a Microsoft format), see:                           #
 ## http://latex2rtf.sourceforge.net/rtfspec_7.html#rtfspec_paraforprop                   #
+## http://www.pindari.com/rtf2.html                                                      #
 ##                                                                                       #
 ## For use as source file include: require(R.oo)                                         #
 ##########################################################################################
@@ -46,9 +47,7 @@
 # }
 #
 # \examples{
-# \dontrun{
-# 
-# output<-"test.rtf.doc"
+# output<-"test_RTF-class.doc"
 # png.res<-300
 #
 # rtf<-RTF(output,width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
@@ -56,7 +55,7 @@
 # addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
 # 
 # # Try trellis plots
-# if(require(lattice)) {
+# if(require(lattice) & require(grid)) {
 # 	# single page trellis objects
 # 	addPageBreak(rtf, width=11,height=8.5,omi=c(0.5,0.5,0.5,0.5))
 # 
@@ -72,17 +71,12 @@
 # }
 # 
 # addPageBreak(rtf, width=6,height=10,omi=c(0.5,0.5,0.5,0.5))
-# addTable(rtf,as.data.frame(head(iris)),font.size=10,row.names=FALSE,NA.string="-",
-#          col.widths=rep(1,5))
+# addTable(rtf,as.data.frame(head(iris)),font.size=10,row.names=FALSE,NA.string="-")
 #
-# tab<-table(iris$Species,floor(iris$Sepal.Length))
-# names(dimnames(tab))<-c("Species","Sepal Length")
-# addParagraph(rtf,"\n\nHere's a new paragraph with another table:\n")
-# addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-",
-#          col.widths=c(1,rep(0.5,4)) )
+# addSessionInfo(rtf)
 # 
 # done(rtf)
-# }}
+# }
 #
 # @author
 #
@@ -96,7 +90,10 @@ setConstructorS3("RTF",
 		.rtf = .start.rtf(width,height,omi), 
 		.file = file,
 		.font.size = font.size,
-		.indent = 0
+		.indent = 0,
+		.page.width = width,
+		.page.height = height,
+		.content.width = width - omi[2] - omi[4]
 	);
 	
 	this;
@@ -125,9 +122,14 @@ setConstructorS3("RTF",
 # }
 #
 # \examples{
-# rtf<-RTF("test.rtf.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# rtf<-RTF("test_addTable.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
 # addTable(rtf,as.data.frame(head(iris)),font.size=10,row.names=FALSE,NA.string="-",
 #          col.widths=rep(1,5))
+# 
+# tab<-table(iris$Species,floor(iris$Sepal.Length))
+# names(dimnames(tab))<-c("Species","Sepal Length")
+# addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-",col.widths=c(1,rep(0.5,4)) )
+#
 # done(rtf)
 # }
 #
@@ -142,15 +144,7 @@ setMethodS3("addTable", "RTF", function(this,dat,col.widths=NULL,font.size=NULL,
 		font.size = this$.font.size  # default
 	}
 	
-	# .convert factor columns in a data frame to characters
-	if("data.frame" %in% class(dat)) {
-		is.na(dat) <- is.na(dat) # handle NaN values by converting to NAs since this throws an error: dat[is.nan(dat)] <- NA.string
-		dat<-data.frame(lapply(dat,as.character),stringsAsFactors=FALSE,check.names=FALSE)
-		dat[is.na(dat)] <- NA.string
-		dat[dat=="NA"] <- NA.string
-	}
-	
-	this$.rtf <- paste(this$.rtf, .add.table(dat,col.widths,font.size,row.names,indent=this$.indent,...),sep="")
+	this$.rtf <- paste(this$.rtf, .add.table(dat,col.widths,font.size,row.names,indent=this$.indent,NA.string=NA.string,max.table.width=this$.content.width, ...),sep="")
 })
 
 #########################################################################/**
@@ -252,7 +246,9 @@ setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NUL
 #
 # \arguments{
 # 	\item{this}{An RTF object.}
-# 	\item{...}{A character @vector of text to add.}
+# 	\item{bold}{Bold text. \bold{optional}.}
+# 	\item{italic}{Italic text. \bold{optional}.}
+# 	\item{...}{Any number of character strings to concatenate.}
 # }
 #
 # @author
@@ -261,8 +257,14 @@ setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NUL
 #   @seeclass
 # }
 #*/#########################################################################
-setMethodS3("addText", "RTF", function(this, ...) {
+setMethodS3("addText", "RTF", function(this, ..., bold=FALSE, italic=FALSE) {
 	text<-paste(... , sep="")
+	if(bold) {
+		text<-paste("\\b ",text,"\\b0",sep="")
+	}
+	if(italic){
+		text<-paste("\\i ",text,"\\i0",sep="")
+	}
 	this$.rtf <- paste(this$.rtf,.add.text(text),sep="")
 })
 
@@ -373,7 +375,7 @@ setMethodS3("endParagraph", "RTF", function(this, ...) {
 # }
 #
 # \examples{
-# rtf<-RTF("test.rtf.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# rtf<-RTF("test_addPageBreak.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
 # addPageBreak(rtf,width=11,height=8.5,omi=c(0.5,0.5,0.5,0.5))
 # done(rtf)
 # }
@@ -385,7 +387,10 @@ setMethodS3("endParagraph", "RTF", function(this, ...) {
 # }
 #*/###########################################################################
 setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,1,1), ...) {
-	this$.rtf <- paste(this$.rtf,.add.page.break(width=width,height=height,omi=omi),sep="")
+	this$.rtf <- paste(this$.rtf,.add.page.break(width=width,height=height,omi=omi),sep="")	
+	this$.page.width = width
+	this$.page.height = height
+	this$.content.width = width - omi[2] - omi[4]
 })
 
 #########################################################################/**
@@ -518,7 +523,7 @@ setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 # }
 #
 # \examples{
-# rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# rtf<-RTF("test_addPlot.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
 # addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
 # done(rtf)
 # }
@@ -530,7 +535,11 @@ setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 # }
 #*/#########################################################################
 setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0.3,res=300, ...) {
-	this$.rtf <- paste(this$.rtf,.rtf.plot(plot.fun=plot.fun,file="tmp.png",width=width,height=height,res=res, ...),sep="")
+	tmp.file<-tempfile("temp_rtf_plot")
+	this$.rtf <- paste(this$.rtf,.rtf.plot(plot.fun=plot.fun,tmp.file=tmp.file,width=width,height=height,res=res, ...),sep="")
+	if(file.exists(tmp.file) ) {
+		unlink(tmp.file)
+	}
 })
 
 #########################################################################/**
@@ -550,24 +559,29 @@ setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0
 # 	\item{width}{Plot output width in inches.}
 # 	\item{height}{Plot output height in inches.}
 # 	\item{res}{Output resolution in dots per inch.}
+# 	\item{rotate}{Object rotation in degrees. \bold{optional}.}
 # 	\item{...}{Not used.}
 # }
 #
 # \details{
-# 	Plots are added to the document as PNG objects.  Multipage trellis objects are 
-#	spread across multiple pages in the RTF output file.
+# 	Plots are added to the document as PNG objects.  Multi-page trellis objects are 
+#	automatically split across multiple pages in the RTF output file.  To rotate the
+#   object to landscape orientation within the RTF output, use rotate=90.  When using 
+#   rotation, width and height still refer to the unrotated plot dimensions and not the 
+#   rotated output dimensions on the RTF page.  An alternative to rotating the plot is
+#   to rotate the entire page using a call to addPageBreak with suitable page width and
+#   height dimensions.
 # }
 #
 # \examples{
-# \dontrun{
-# rtf<-RTF("output.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
-# if(require(lattice)) {
+# rtf<-RTF("test_addTrellisObject.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# if(require(lattice) & require(grid)) {
 # 	# multipage trellis object
 # 	p2<-xyplot(uptake ~ conc | Plant, CO2, layout = c(2,2))
-# 	addTrellisObject(rtf,trellis.object=p2,width=6,height=6,res=png.res)
+# 	addTrellisObject(rtf,trellis.object=p2,width=8,height=4,res=300, rotate=90)
 # }
 # done(rtf)
-# }}
+# }
 #
 # @author
 #
@@ -575,12 +589,111 @@ setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0
 #   @seeclass
 # }
 #*/#########################################################################
-setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,height=0.3,res=300, ...) {
-	this$.rtf <- paste(this$.rtf,.rtf.trellis.object(trellis.object=trellis.object,file="tmp.png",width=width,height=height,res=res),sep="")
+setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,height=0.3,res=300, rotate=NULL, ...) {
+	tmp.file<-tempfile("temp_rtf_trellis")
+	this$.rtf <- paste(this$.rtf,.rtf.trellis.object(trellis.object=trellis.object,tmp.file=tmp.file,width=width,height=height,res=res,rotate=rotate),sep="")
+	if(file.exists(tmp.file) ) {
+		unlink(tmp.file)
+	}
 })
 
 
-
+#########################################################################/**
+# @RdocMethod addSessionInfo
+#
+# @title "Insert session information into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+#	\item{locale}{Output the locale.}
+# 	\item{...}{Not used.}
+# }
+#
+# \details{
+# 	Exports session information to the RTF document in a similar
+# }
+#
+# \examples{
+# rtf<-RTF("test_addSessionInfo.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+# addSessionInfo(rtf)
+# done(rtf)
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass, \code{\link{sessionInfo}}.
+# }
+#*/#########################################################################
+setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
+	
+	si<-sessionInfo()
+	opkgver <- sapply(si$otherPkgs, function(x) x$Version)
+    nspkgver <- sapply(si$loadedOnly, function(x) x$Version)
+	
+	startParagraph(this)
+	addText(this,"Session Information",bold=TRUE)
+	endParagraph(this)
+	
+	startParagraph(this)
+	addText(this,si$R.version$version.string,bold=TRUE,italic=TRUE)
+	endParagraph(this)
+	
+	increaseIndent(this)
+	startParagraph(this)
+	addText(this,"Platform: ")
+    addText(this,si$R.version$platform,italic=TRUE)
+    
+	if (locale) {
+		addText(this,"\nLocale: ")
+        addText(this,si$locale,italic=TRUE)
+    }
+    endParagraph(this)
+    decreaseIndent(this)
+    
+    startParagraph(this)
+    addText(this,"Packages",bold=TRUE,italic=TRUE)
+    endParagraph(this)
+    
+    increaseIndent(this)
+    startParagraph(this)
+    addText(this,"Base: ")
+	addText(this, paste(sort(si$basePkgs), collapse = ", "),italic=TRUE)
+	
+	if (length(opkgver)) {
+        opkgver <- opkgver[sort(names(opkgver))]
+        addText(this,"\nOther: ")
+        vers<-paste("(v",opkgver,")",sep="")
+        addText(this, paste(names(opkgver), vers, sep = " ", collapse = ", "),italic=TRUE)
+    }
+    
+    if (length(nspkgver)) {
+        nspkgver <- nspkgver[sort(names(nspkgver))]
+    	addText(this,"\nLoaded (not attached): ")
+    	vers<-paste("(v",nspkgver,")",sep="")
+    	addText(this, paste(names(nspkgver), vers, sep = " ", collapse = ", "),italic=TRUE)
+    }
+    endParagraph(this)
+    decreaseIndent(this)
+    
+    startParagraph(this)
+    addText(this,"Session Details",bold=TRUE,italic=TRUE)
+    endParagraph(this)
+    increaseIndent(this)
+    startParagraph(this)
+    addText(this,"Working directory: ")
+	addText(this, getwd(),italic=TRUE)
+	addText(this,"\nOutput file: ")
+	addText(this, this$.file,italic=TRUE)
+	endParagraph(this)
+    decreaseIndent(this)
+})
 
 ######################################################################################
 
@@ -691,7 +804,7 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 }
 
 
-.add.table<-function(dat,col.widths=NULL,font.size=12,row.names=FALSE,indent=0) {
+.add.table<-function(dat,col.widths=NULL,font.size=12,row.names=FALSE,indent=0,NA.string="-",max.table.width=NULL) {
 	ret<-"{\\pard\n"
 	
 	if("table" %in% class(dat)) {
@@ -767,7 +880,26 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 		# Total rows
 		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent),sep="")
 		
-	} else {
+	} else if ("data.frame" %in% class(dat) || "matrix" %in% class(dat)) {
+		# convert matrix to data frame
+		if("matrix" %in% class(dat)) {
+			dat<-as.data.frame(dat)
+		}
+		
+		# convert factor columns in a data frame to characters
+		rnames<-rownames(dat)
+		is.na(dat) <- is.na(dat) # handle NaN values by converting to NAs since this throws an error: dat[is.nan(dat)] <- NA.string
+		dat<-data.frame(lapply(dat,as.character),stringsAsFactors=FALSE,check.names=FALSE)
+		dat[is.na(dat)] <- NA.string
+		dat[dat=="NA"] <- NA.string
+		rownames(dat)<-rnames
+		
+		# if no column widths are specified, then calculate optimal sizes that fit the page
+		if(is.null(col.widths) & !is.null(max.table.width)) {
+			col.widths <- .optimize.col.widths(dat,include.row.names=row.names,max.table.width=max.table.width,font.size=font.size)
+		}
+		
+		# render the header
 		nc<-ncol(dat)
 		if(row.names==TRUE){ nc<-nc+1 }
 		
@@ -778,6 +910,7 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 			ret<-paste(ret,.add.table.header.row(colnames(dat),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 		}
 		
+		# render the rows
 		if(nrow(dat)>1) {
 			for(i in 1:(nrow(dat)-1)) {
 				if(row.names==TRUE){
@@ -795,6 +928,9 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 		} else {
 			ret<-paste(ret,.add.table.row(as.character(dat[nrow(dat),]),col.widths,font.size=font.size,last.row=TRUE,indent=indent),sep="")
 		}
+		
+	} else {
+		warning("No suitable RTF converter for object class!")
 	}
 	
 	ret<-paste(ret,"}",sep="\n")
@@ -809,6 +945,7 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 
 .convert<-function(x) {
 	x<-gsub("\\n"," \\\\line ",x)         # .convert new line to RTF \line
+	#x<-gsub("\\t"," \\\\tab ",x)         # .convert tab to RTF \tab
 	x<-gsub("<=","\\\\u8804\\\\3",x)      # .convert <= to RTF symbol
 	x<-gsub(">=","\\\\u8805\\\\3",x)      # .convert >= to RTF symbol
 	
@@ -854,30 +991,85 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 	# paste("{\\rtf1\\ansi\\deff0{\\pict\\pngblip\\picwgoal",round(width*1440),"\\pichgoal",round(height*1440)," \n",.chunk.vector(dat),"}}",sep="")
 }
 
-.rtf.plot<-function(plot.fun,file="tmp.png",width=3.0,height=0.3,res=300, ...) {
+.rtf.plot<-function(plot.fun,tmp.file="temp.png",width=3.0,height=0.3,res=300, ...) {
 	width.px<-round(width*res)
 	height.px<-round(height*res)
-	png(file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
+	#png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
+	png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "transparent",res=res)
 	plot.fun(...)
 	dev.off()
-	.add.png(file,width=width,height=height)
+	.add.png(tmp.file,width=width,height=height)
 }
 
-.rtf.trellis.object<-function(trellis.object,file="tmp.png",width=3.0,height=0.3,res=300, ...) {
+.rtf.trellis.object<-function(trellis.object,tmp.file="temp.png",width=3.0,height=0.3,res=300,rotate=NULL, ...) {
 	if(class(trellis.object) != "trellis") {
 		stop("Not a trellis object!")
 	}
 	
 	ret<-""
 	
+# 	if(is.null(trellis.object$layout)) {
+# 		# single page
+# 		width.px<-round(width*res)
+# 		height.px<-round(height*res)
+# 		png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
+# 		print(trellis.object)
+# 		dev.off()
+# 		
+# 		if(!is.null(rotate)) {
+# 			system(paste("convert -rotate ",rotate," '",tmp.file,"' '",tmp.file,"'",sep=""))
+# 			ret<-.add.png(tmp.file,width=height,height=width) # swap width and height
+# 		} else {
+# 			ret<-.add.png(tmp.file,width=width,height=height)
+# 		}
+# 		
+# 	} else {
+# 		plot.cnt<-dim(trellis.object)
+# 		per.page<-trellis.object$layout[1]*trellis.object$layout[2]
+# 		pages<-floor((plot.cnt-1)/per.page)+1
+# 		
+# 		for(pg in 1:pages) {
+# 			plot.start<-(pg-1)*per.page+1
+# 			plot.end<-min(plot.cnt,pg*per.page)
+# 			
+# 			width.px<-round(width*res)
+# 			height.px<-round(height*res)
+# 			png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
+# 			print(trellis.object[plot.start:plot.end])
+# 			dev.off()
+# 			
+# 			if(!is.null(rotate)) {
+# 				system(paste("convert -rotate ",rotate," '",tmp.file,"' '",tmp.file,"'",sep=""))
+# 				ret<-paste(ret,.add.png(tmp.file,width=height,height=width),sep="\n") # swap width and height
+# 			} else {
+# 				ret<-paste(ret,.add.png(tmp.file,width=width,height=height),sep="\n")
+# 			}
+# 		}
+# 	}
+	
 	if(is.null(trellis.object$layout)) {
 		# single page
 		width.px<-round(width*res)
 		height.px<-round(height*res)
-		png(file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
-		print(trellis.object)
-		dev.off()
-		ret<-.add.png(file,width=width,height=height)
+		
+		if(!is.null(rotate)) {
+			
+			png(tmp.file,width=height.px,height=width.px,units="px",pointsize=8,bg = "transparent",res=res)
+			#grid::grid.newpage()
+			grid::pushViewport(grid::viewport(width=grid::unit(width,"inches"),height=grid::unit(height,"inches"),angle = rotate))
+			print(trellis.object, newpage = FALSE)
+			#grid::upViewport()
+			dev.off()
+			
+			ret<-.add.png(tmp.file,width=height,height=width) # swap width and height
+			
+		} else {
+			png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "transparent",res=res)
+			print(trellis.object)
+			dev.off()
+			
+			ret<-.add.png(tmp.file,width=width,height=height)
+		}
 		
 	} else {
 		plot.cnt<-dim(trellis.object)
@@ -890,13 +1082,69 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 			
 			width.px<-round(width*res)
 			height.px<-round(height*res)
-			png(file,width=width.px,height=height.px,units="px",pointsize=8,bg = "white",res=res)
-			print(trellis.object[plot.start:plot.end])
-			dev.off()
-			ret<-paste(ret,.add.png(file,width=width,height=height),sep="\n")
+			
+			if(!is.null(rotate)) {
+				png(tmp.file,width=height.px,height=width.px,units="px",pointsize=8,bg = "transparent",res=res)
+				#grid::grid.newpage()
+				grid::pushViewport(grid::viewport(width=grid::unit(width,"inches"),height=grid::unit(height,"inches"),angle = rotate))
+				print(trellis.object[plot.start:plot.end], newpage = FALSE)
+				#grid::upViewport()
+				dev.off()
+				ret<-paste(ret,.add.png(tmp.file,width=height,height=width),sep="\n") # swap width and height
+			} else {
+				png(tmp.file,width=width.px,height=height.px,units="px",pointsize=8,bg = "transparent",res=res)
+				print(trellis.object[plot.start:plot.end])
+				dev.off()
+				
+				ret<-paste(ret,.add.png(tmp.file,width=width,height=height),sep="\n")
+			}
 		}
 	}
 	
 	ret
 }
 
+.max.col.nchar<-function(x,include.row.names=FALSE,wrap.headers=TRUE) {
+	# for each column, returns the maximum width (in characters) of either the 
+	# largest header word or largest entire column field.  This allows 
+	# headers to be longer and have word wrapping while attempting
+	# to keep each field of table data on a single line.
+	
+	contents<-apply(x,2,function(x){max(nchar(x))} )
+	col.nchar<-c()
+	
+	if(wrap.headers==TRUE) {
+		# find maximum word width in each header (split on spaces)
+		headers<-sapply(names(x), function(x){ max(nchar(strsplit(x," ")[[1]])) } )
+		col.nchar<-mapply(max,contents,headers)
+	} else {
+		headers<-nchar(names(x))
+		col.nchar<-mapply(max,contents,headers)
+	}
+	
+	if(include.row.names==TRUE) {
+		row.names.nchar<-max(sapply(rownames(x),nchar))
+		col.nchar<-c(row.names.nchar,col.nchar)
+	}
+	
+	col.nchar
+}
+
+.optimize.col.widths<-function(x,include.row.names=FALSE,max.table.width=6.5,font.size=9,col.padding=0.1) {
+	letter.width<-font.size * 1/144    # font point size to width (roughly 1/144 inch)
+	letter.width<-letter.width + 0.03  # fine tuning to account for all caps columns or bold
+	
+	max.nchars <- .max.col.nchar(x,include.row.names,wrap.headers=TRUE)
+	col.widths <- max.nchars*letter.width+2*col.padding
+	
+	# This could also be tweaked with a more formal character width analysis:
+	# http://stephensite.net/WordPressSS/2008/02/19/how-to-calculate-the-character-width-accross-fonts-and-points/
+
+	# If table is still too wide, resize each column proportionally to the content to
+	# fit the maximum table width allowed
+	if(sum(col.widths) > max.table.width) {
+		col.widths<-col.widths/sum(col.widths) * max.table.width
+	}
+	
+	col.widths
+}

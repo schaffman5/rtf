@@ -26,6 +26,7 @@
 \alias{setFontSize}
 \alias{addPlot}
 \alias{addTrellisObject}
+\alias{addSessionInfo}
 
 \alias{rtf.forest.plot.xscale}
 
