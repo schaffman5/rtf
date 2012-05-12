@@ -1,3 +1,10 @@
+CHANGES IN 0.4-4 (2012-04-11)
+-----------------------------
+Added documentation to output ggplot2 plots.
+Added generic addPng method for inserting existing images.
+Fixed output of some UTF-8 symbols method that were not being escaped properly.
+Fixed a problem with the row.names parameter in addTable for data.frames.
+
 CHANGES IN 0.4-3 (2011-10-03)
 -----------------------------
 Added NAMESPACE as required for packages in R-2.14.0.

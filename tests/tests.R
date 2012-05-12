@@ -84,7 +84,9 @@ colnames(tab)<-paste("C",c(1:ncols),sep="")
 addParagraph(rtf,"\n\nAnother table based on a 'data.frame' class with automatic column widths (multi-word/mixed case)\n")
 addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-")
 
-
+# Try some UTF-8 output
+addParagraph(rtf,"\n\nTry some UTF-8 output in a table\n")
+addTable(rtf,data.frame(utf="\u2586"),font.size=10,row.names=FALSE,NA.string="-")
 
 addNewLine(rtf)
 addNewLine(rtf)

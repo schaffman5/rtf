@@ -15,6 +15,7 @@
 # @alias increaseIndent
 # @alias setFontSize
 # @alias addPlot
+# @alias addPng
 # @alias addTrellisObject
 # @alias addSessionInfo
 #

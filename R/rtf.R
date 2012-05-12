@@ -519,7 +519,14 @@ setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 # }
 #
 # \details{
-# 	Plots are added to the document as PNG objects.
+# 	Plots are added to the document as PNG objects.  This function will work with all
+#   base graphics methods for plotting.  For more sophisticated plots, you may need to
+#   wrap your plot code into a function, and then pass a reference to that function to
+#   this method.  The parameters for the plot method would then get passed in as '...'
+#   above.
+#
+#   To output a ggplot2 plot, simply assign the plot to a variable.  Then use 'print'
+#   as the plot function and pass in the plot variable assigned above. 
 # }
 #
 # \examples{
@@ -540,6 +547,39 @@ setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0
 	if(file.exists(tmp.file) ) {
 		unlink(tmp.file)
 	}
+})
+
+#########################################################################/**
+# @RdocMethod addPng
+#
+# @title "Insert an existing PNG image into the RTF document"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{file}{Image file path.}
+# 	\item{width}{Plot output width in inches.}
+# 	\item{height}{Plot output height in inches.}
+# 	\item{...}{Not used.}
+# }
+#
+# \details{
+# 	Add existing PNG file to RTF document.
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+#*/#########################################################################
+setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
+	this$.rtf <- paste(this$.rtf,.add.png(file,width=width,height=height,verbose=FALSE),sep="")
 })
 
 #########################################################################/**
@@ -944,23 +984,32 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 }
 
 .convert<-function(x) {
-	x<-gsub("\\n"," \\\\line ",x)         # .convert new line to RTF \line
-	#x<-gsub("\\t"," \\\\tab ",x)         # .convert tab to RTF \tab
-	x<-gsub("<=","\\\\u8804\\\\3",x)      # .convert <= to RTF symbol
-	x<-gsub(">=","\\\\u8805\\\\3",x)      # .convert >= to RTF symbol
+	# http://www.ssec.wisc.edu/~tomw/java/unicode.html
+	#x<-gsubfn("\\u(\\d+)", .hex2dec, x, engine="R")     # format UTF-8 characters from hex to dec
+	#x<-gsub("\\u(\\d+)","\\\\u\\1\\\\3",x)  # format UTF-8 characters from hex to dec
 	
-	x<-gsub(":delta:","\\\\u0916\\\\3",x) # .convert :delta: to uppercase Greek delta
+	x<-gsub("\\n"," \\\\line ",x)         # convert new line to RTF \line
+	#x<-gsub("\\t"," \\\\tab ",x)         # convert tab to RTF \tab
+	x<-gsub("<=","\\\\u8804\\\\3",x)      # convert <= to RTF symbol
+	x<-gsub(">=","\\\\u8805\\\\3",x)      # convert >= to RTF symbol
 	
-	x<-gsub("&alpha;","\\\\u0945\\\\3",x) # .convert &alpha; to lowercase Greek alpha
-	x<-gsub("&beta;","\\\\u0946\\\\3",x)  # .convert &beta; to lowercase Greek beta
-	x<-gsub("&delta;","\\\\u0947\\\\3",x) # .convert &delta; to lowercase Greek delta
-	x<-gsub("&gamma;","\\\\u0948\\\\3",x) # .convert &gamma; to lowercase Greek gamma
+	x<-gsub(":delta:","\\\\u0916\\\\3",x) # convert :delta: to uppercase Greek delta
 	
-	x<-gsub("&Alpha;","\\\\u0913\\\\3",x) # .convert &Alpha; to uppercase Greek alpha
-	x<-gsub("&Beta;","\\\\u0914\\\\3",x)  # .convert &Beta; to uppercase Greek beta
-	x<-gsub("&Delta;","\\\\u0915\\\\3",x) # .convert &Delta; to uppercase Greek delta
-	x<-gsub("&Gamma;","\\\\u0916\\\\3",x) # .convert &Gamma; to uppercase Greek gamma
+	x<-gsub("&alpha;","\\\\u0945\\\\3",x) # convert &alpha; to lowercase Greek alpha
+	x<-gsub("&beta;","\\\\u0946\\\\3",x)  # convert &beta; to lowercase Greek beta
+	x<-gsub("&gamma;","\\\\u0948\\\\3",x) # convert &gamma; to lowercase Greek gamma
+	x<-gsub("&delta;","\\\\u0947\\\\3",x) # convert &delta; to lowercase Greek delta
+	x<-gsub("&epsilon;","\\\\u0949\\\\3",x) # convert &epsilon; to lowercase Greek epsilon
+	x<-gsub("&theta;","\\\\u0952\\\\3",x) # convert &theta; to lowercase Greek theta
+	x<-gsub("&kappa;","\\\\u0954\\\\3",x) # convert &kappa; to lowercase Greek kappa
 	
+	x<-gsub("&Alpha;","\\\\u0913\\\\3",x) # convert &Alpha; to uppercase Greek alpha
+	x<-gsub("&Beta;","\\\\u0914\\\\3",x)  # convert &Beta; to uppercase Greek beta
+	x<-gsub("&Gamma;","\\\\u0916\\\\3",x) # convert &Gamma; to uppercase Greek gamma
+	x<-gsub("&Delta;","\\\\u0915\\\\3",x) # convert &Delta; to uppercase Greek delta
+	x<-gsub("&Epsilon;","\\\\u0917\\\\3",x) # convert &Epsilon; to uppercase Greek epsilon
+	x<-gsub("&Theta;","\\\\u0920\\\\3",x) # convert &Theta; to uppercase Greek theta
+	x<-gsub("&Kappa;","\\\\u0922\\\\3",x) # convert &Kappa; to lowercase Greek kappa
 	
 	x<-gsub("TRUE","Yes",x)
 	x<-gsub("FALSE","No",x)
@@ -1147,4 +1196,15 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	}
 	
 	col.widths
+}
+
+.hex2dec <- function(hexadecimal) {
+	hexdigits <- c(0:9, LETTERS[1:6])
+	hexadecimal <- toupper(hexadecimal)    # treat upper/lower case the same
+	decimal <- rep(0, length(hexadecimal))
+	for (i in 1:length(hexadecimal)) {
+		digits <- match(strsplit(hexadecimal[i],"")[[1]], hexdigits) - 1
+		decimal[i] <- sum(digits * 16^((length(digits)-1):0))
+	}
+	return(decimal)
 }

@@ -51,6 +51,7 @@ extends \link[R.oo]{Object}\cr
  \tab \code{\link[rtf:addPageBreak.RTF]{addPageBreak}} \tab Insert a page break into the RTF document optionally specifying new page settings.\cr
  \tab \code{\link[rtf:addParagraph.RTF]{addParagraph}} \tab Insert a paragraph into the RTF document.\cr
  \tab \code{\link[rtf:addPlot.RTF]{addPlot}} \tab Insert a plot into the RTF document.\cr
+ \tab \code{\link[rtf:addPng.RTF]{addPng}} \tab Insert an existing PNG image into the RTF document.\cr
  \tab \code{\link[rtf:addSessionInfo.RTF]{addSessionInfo}} \tab Insert session information into the RTF document.\cr
  \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Insert a table into the RTF document.\cr
  \tab \code{\link[rtf:addText.RTF]{addText}} \tab Insert text into the RTF document.\cr

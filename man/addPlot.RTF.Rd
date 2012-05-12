@@ -31,7 +31,14 @@
  }
 
  \details{
- 	Plots are added to the document as PNG objects.
+ 	Plots are added to the document as PNG objects.  This function will work with all
+   base graphics methods for plotting.  For more sophisticated plots, you may need to
+   wrap your plot code into a function, and then pass a reference to that function to
+   this method.  The parameters for the plot method would then get passed in as '...'
+   above.
+
+   To output a ggplot2 plot, simply assign the plot to a variable.  Then use 'print'
+   as the plot function and pass in the plot variable assigned above.
  }
 
  \examples{
