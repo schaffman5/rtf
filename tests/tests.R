@@ -88,6 +88,10 @@ addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-")
 addParagraph(rtf,"\n\nTry some UTF-8 output in a table\n")
 addTable(rtf,data.frame(utf="\u2586"),font.size=10,row.names=FALSE,NA.string="-")
 
+# Add a Greek substitutions
+addParagraph(rtf,"\n\nTry some Greek letters\n&Alpha; &Beta; &Gamma; &Delta; &Epsilon; &Zeta; &Eta; &Theta; &Iota; &Kappa; &Lambda; &Mu; &Nu; &Xi; &Omicron; &Pi; &Rho; &Sigma; &Tau; &Upsilon; &Phi; &Chi; &Psi; &Omega; &alpha; &beta; &gamma; &delta; &epsilon; &zeta; &eta; &theta; &iota; &kappa; &lambda; &mu; &nu; &xi; &omicron; &pi; &rho; &sigmaf; &sigma; &tau; &upsilon; &phi; &chi; &psi; &omega;\n\n")
+
+
 addNewLine(rtf)
 addNewLine(rtf)
 addSessionInfo(rtf)

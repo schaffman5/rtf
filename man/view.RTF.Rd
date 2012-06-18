@@ -35,5 +35,6 @@
  \seealso{
  	For more information see \code{\link{RTF}}.
  }
-\keyword{internal}
+
+
 \keyword{methods}

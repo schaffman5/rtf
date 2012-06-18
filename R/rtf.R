@@ -138,6 +138,8 @@ setConstructorS3("RTF",
 # \seealso{
 # 	@seeclass
 # }
+# 
+# @keyword -internal
 #*/###########################################################################
 setMethodS3("addTable", "RTF", function(this,dat,col.widths=NULL,font.size=NULL,row.names=FALSE,NA.string="-", ...) {
 	if(is.null(font.size)) {
@@ -172,6 +174,8 @@ setMethodS3("addTable", "RTF", function(this,dat,col.widths=NULL,font.size=NULL,
 # \seealso{
 # 	@seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("view", "RTF", function(this, ...) {
 	print(this$.rtf)
@@ -189,11 +193,18 @@ setMethodS3("view", "RTF", function(this, ...) {
 #
 # @synopsis
 #
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
 # @author
 #
 # \seealso{
 # 	@seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("done", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.end.rtf(),sep="")
@@ -224,6 +235,8 @@ setMethodS3("done", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NULL,...) {
 	if(is.null(font.size)) {
@@ -256,6 +269,8 @@ setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NUL
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addText", "RTF", function(this, ..., bold=FALSE, italic=FALSE) {
 	text<-paste(... , sep="")
@@ -289,6 +304,8 @@ setMethodS3("addText", "RTF", function(this, ..., bold=FALSE, italic=FALSE) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addParagraph", "RTF", function(this, ...) {
 	text<-paste(... , sep="")
@@ -323,6 +340,8 @@ setMethodS3("addParagraph", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("startParagraph", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.start.paragraph(indent=this$.indent),sep="")
@@ -349,6 +368,8 @@ setMethodS3("startParagraph", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("endParagraph", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
@@ -369,7 +390,6 @@ setMethodS3("endParagraph", "RTF", function(this, ...) {
 # 	\item{this}{An RTF object.}
 # 	\item{width}{New page width in inches. \bold{optional}.}
 # 	\item{height}{New page height in inches. \bold{optional}.}
-# 	\item{font.size}{New default font size in points. \bold{optional}.}
 # 	\item{omi}{A @vector of page margins (botton, left, top, right) \bold{optional}.}
 # 	\item{...}{Not used.}
 # }
@@ -385,6 +405,8 @@ setMethodS3("endParagraph", "RTF", function(this, ...) {
 # \seealso{
 # 	@seeclass
 # }
+# 
+# @keyword -internal
 #*/###########################################################################
 setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,1,1), ...) {
 	this$.rtf <- paste(this$.rtf,.add.page.break(width=width,height=height,omi=omi),sep="")	
@@ -414,6 +436,8 @@ setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addNewLine", "RTF", function(this, ...) {
 	this$.rtf <- paste(this$.rtf,.add.newline(),sep="")
@@ -440,6 +464,8 @@ setMethodS3("addNewLine", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("increaseIndent", "RTF", function(this, ...) {
 	this$.indent <- this$.indent + 720 # 1/2" increments
@@ -466,6 +492,8 @@ setMethodS3("increaseIndent", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("decreaseIndent", "RTF", function(this, ...) {
 	this$.indent <- max(0,this$.indent - 720) # 1/2" increments
@@ -493,6 +521,8 @@ setMethodS3("decreaseIndent", "RTF", function(this, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 	this$.font.size <- font.size
@@ -540,6 +570,8 @@ setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0.3,res=300, ...) {
 	tmp.file<-tempfile("temp_rtf_plot")
@@ -577,6 +609,8 @@ setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
 	this$.rtf <- paste(this$.rtf,.add.png(file,width=width,height=height,verbose=FALSE),sep="")
@@ -628,6 +662,8 @@ setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
 # \seealso{
 #   @seeclass
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,height=0.3,res=300, rotate=NULL, ...) {
 	tmp.file<-tempfile("temp_rtf_trellis")
@@ -670,6 +706,8 @@ setMethodS3("addTrellisObject", "RTF", function(this,trellis.object,width=3.0,he
 # \seealso{
 #   @seeclass, \code{\link{sessionInfo}}.
 # }
+# 
+# @keyword -internal
 #*/#########################################################################
 setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	
@@ -993,23 +1031,78 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	x<-gsub("<=","\\\\u8804\\\\3",x)      # convert <= to RTF symbol
 	x<-gsub(">=","\\\\u8805\\\\3",x)      # convert >= to RTF symbol
 	
-	x<-gsub(":delta:","\\\\u0916\\\\3",x) # convert :delta: to uppercase Greek delta
+# 	x<-gsub(":delta:","\\\\u0916\\\\3",x) # convert :delta: to uppercase Greek delta
+# 	
+# 	x<-gsub("&alpha;","\\\\u0945\\\\3",x) # convert &alpha; to lowercase Greek alpha
+# 	x<-gsub("&beta;","\\\\u0946\\\\3",x)  # convert &beta; to lowercase Greek beta
+# 	x<-gsub("&gamma;","\\\\u0947\\\\3",x) # convert &gamma; to lowercase Greek gamma
+# 	x<-gsub("&delta;","\\\\u0948\\\\3",x) # convert &delta; to lowercase Greek delta
+# 	x<-gsub("&epsilon;","\\\\u0949\\\\3",x) # convert &epsilon; to lowercase Greek epsilon
+# 	x<-gsub("&theta;","\\\\u0952\\\\3",x) # convert &theta; to lowercase Greek theta
+# 	x<-gsub("&kappa;","\\\\u0954\\\\3",x) # convert &kappa; to lowercase Greek kappa
+# 	x<-gsub("&lambda;","\\\\u0955\\\\3",x) # convert &lambda; to lowercase Greek lambda
+# 	x<-gsub("&mu;","\\\\u0956\\\\3",x)    # convert &mu; to lowercase Greek lambda
+# 	
+# 	x<-gsub("&Alpha;","\\\\u0913\\\\3",x) # convert &Alpha; to uppercase Greek alpha
+# 	x<-gsub("&Beta;","\\\\u0914\\\\3",x)  # convert &Beta; to uppercase Greek beta
+# 	x<-gsub("&Gamma;","\\\\u0915\\\\3",x) # convert &Gamma; to uppercase Greek gamma
+# 	x<-gsub("&Delta;","\\\\u0916\\\\3",x) # convert &Delta; to uppercase Greek delta
+# 	x<-gsub("&Epsilon;","\\\\u0917\\\\3",x) # convert &Epsilon; to uppercase Greek epsilon
+# 	x<-gsub("&Theta;","\\\\u0920\\\\3",x) # convert &Theta; to uppercase Greek theta
+# 	x<-gsub("&Kappa;","\\\\u0922\\\\3",x) # convert &Kappa; to lowercase Greek kappa
+# 	x<-gsub("&Lambda;","\\\\u0923\\\\3",x) # convert &Lambda; to lowercase Greek lambda
+# 	x<-gsub("&Mu;","\\\\u0924\\\\3",x)     # convert &Mu; to lowercase Greek lambda
 	
-	x<-gsub("&alpha;","\\\\u0945\\\\3",x) # convert &alpha; to lowercase Greek alpha
-	x<-gsub("&beta;","\\\\u0946\\\\3",x)  # convert &beta; to lowercase Greek beta
-	x<-gsub("&gamma;","\\\\u0948\\\\3",x) # convert &gamma; to lowercase Greek gamma
-	x<-gsub("&delta;","\\\\u0947\\\\3",x) # convert &delta; to lowercase Greek delta
-	x<-gsub("&epsilon;","\\\\u0949\\\\3",x) # convert &epsilon; to lowercase Greek epsilon
-	x<-gsub("&theta;","\\\\u0952\\\\3",x) # convert &theta; to lowercase Greek theta
-	x<-gsub("&kappa;","\\\\u0954\\\\3",x) # convert &kappa; to lowercase Greek kappa
-	
-	x<-gsub("&Alpha;","\\\\u0913\\\\3",x) # convert &Alpha; to uppercase Greek alpha
-	x<-gsub("&Beta;","\\\\u0914\\\\3",x)  # convert &Beta; to uppercase Greek beta
-	x<-gsub("&Gamma;","\\\\u0916\\\\3",x) # convert &Gamma; to uppercase Greek gamma
-	x<-gsub("&Delta;","\\\\u0915\\\\3",x) # convert &Delta; to uppercase Greek delta
-	x<-gsub("&Epsilon;","\\\\u0917\\\\3",x) # convert &Epsilon; to uppercase Greek epsilon
-	x<-gsub("&Theta;","\\\\u0920\\\\3",x) # convert &Theta; to uppercase Greek theta
-	x<-gsub("&Kappa;","\\\\u0922\\\\3",x) # convert &Kappa; to lowercase Greek kappa
+	# convert uppercase and lowercase Greek letters
+	x<-gsub("&Alpha;","\\\\u0913\\\\3",x)
+	x<-gsub("&Beta;","\\\\u0914\\\\3",x)
+	x<-gsub("&Gamma;","\\\\u0915\\\\3",x)
+	x<-gsub("&Delta;","\\\\u0916\\\\3",x)
+	x<-gsub("&Epsilon;","\\\\u0917\\\\3",x)
+	x<-gsub("&Zeta;","\\\\u0918\\\\3",x)
+	x<-gsub("&Eta;","\\\\u0919\\\\3",x)
+	x<-gsub("&Theta;","\\\\u0920\\\\3",x)
+	x<-gsub("&Iota;","\\\\u0921\\\\3",x)
+	x<-gsub("&Kappa;","\\\\u0922\\\\3",x)
+	x<-gsub("&Lambda;","\\\\u0923\\\\3",x)
+	x<-gsub("&Mu;","\\\\u0924\\\\3",x)
+	x<-gsub("&Nu;","\\\\u0925\\\\3",x)
+	x<-gsub("&Xi;","\\\\u0926\\\\3",x)
+	x<-gsub("&Omicron;","\\\\u0927\\\\3",x)
+	x<-gsub("&Pi;","\\\\u0928\\\\3",x)
+	x<-gsub("&Rho;","\\\\u0929\\\\3",x)
+	x<-gsub("&Sigma;","\\\\u0931\\\\3",x)
+	x<-gsub("&Tau;","\\\\u0932\\\\3",x)
+	x<-gsub("&Upsilon;","\\\\u0933\\\\3",x)
+	x<-gsub("&Phi;","\\\\u0934\\\\3",x)
+	x<-gsub("&Chi;","\\\\u0935\\\\3",x)
+	x<-gsub("&Psi;","\\\\u0936\\\\3",x)
+	x<-gsub("&Omega;","\\\\u0937\\\\3",x)
+	x<-gsub("&alpha;","\\\\u0945\\\\3",x)
+	x<-gsub("&beta;","\\\\u0946\\\\3",x)
+	x<-gsub("&gamma;","\\\\u0947\\\\3",x)
+	x<-gsub("&delta;","\\\\u0948\\\\3",x)
+	x<-gsub("&epsilon;","\\\\u0949\\\\3",x)
+	x<-gsub("&zeta;","\\\\u0950\\\\3",x)
+	x<-gsub("&eta;","\\\\u0951\\\\3",x)
+	x<-gsub("&theta;","\\\\u0952\\\\3",x)
+	x<-gsub("&iota;","\\\\u0953\\\\3",x)
+	x<-gsub("&kappa;","\\\\u0954\\\\3",x)
+	x<-gsub("&lambda;","\\\\u0955\\\\3",x)
+	x<-gsub("&mu;","\\\\u0956\\\\3",x)
+	x<-gsub("&nu;","\\\\u0957\\\\3",x)
+	x<-gsub("&xi;","\\\\u0958\\\\3",x)
+	x<-gsub("&omicron;","\\\\u0959\\\\3",x)
+	x<-gsub("&pi;","\\\\u0960\\\\3",x)
+	x<-gsub("&rho;","\\\\u0961\\\\3",x)
+	x<-gsub("&sigmaf;","\\\\u0962\\\\3",x)
+	x<-gsub("&sigma;","\\\\u0963\\\\3",x)
+	x<-gsub("&tau;","\\\\u0964\\\\3",x)
+	x<-gsub("&upsilon;","\\\\u0965\\\\3",x)
+	x<-gsub("&phi;","\\\\u0966\\\\3",x)
+	x<-gsub("&chi;","\\\\u0967\\\\3",x)
+	x<-gsub("&psi;","\\\\u0968\\\\3",x)
+	x<-gsub("&omega;","\\\\u0969\\\\3",x)
 	
 	x<-gsub("TRUE","Yes",x)
 	x<-gsub("FALSE","No",x)
@@ -1178,6 +1271,14 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	
 	col.nchar
 }
+
+# TODO this code is not so great.  Can we take advantage of R's strwidth function
+# and plug in the font faces and size in points to estimate the width. E.g.
+# 
+# strwidth("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.?,;:'\"!@#$%^&*()-=+_[]{}|\\",units="inches",family="Times",ps=12)
+# 
+# where face = (1=plain, 2=bold, 3=italic, 4=bold-italic)
+# see also : ps.options()
 
 .optimize.col.widths<-function(x,include.row.names=FALSE,max.table.width=6.5,font.size=9,col.padding=0.1) {
 	letter.width<-font.size * 1/144    # font point size to width (roughly 1/144 inch)

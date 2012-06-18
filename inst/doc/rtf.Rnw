@@ -1,0 +1,316 @@
+%\VignetteIndexEntry{An R Package for RTF output}
+%\VignetteDepends{R.oo, gsubfn}
+%\VignetteSuggests{ggplot2, lattice, grid}
+%\VignetteImports{}
+%\VignettePackage{rtf}
+%\VignetteKeyword{RTF}
+%\VignetteKeyword{Microsoft Word}
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{Sweave}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\geometry{hmargin = 1.5in, vmargin = 1.5in }
+\SweaveOpts{keep.source=TRUE}    % Keeps comments in the R code.
+\pagestyle{plain}
+
+
+\begin{document}
+
+\title{Vignette for the \texttt{rtf} Package}
+\author{Michael E. Schaffer}
+\date{June 2012}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+\texttt{rtf} is a package for outputting Rich Text Format (RTF) files with high resolution tables and graphics that may be edited with standard word processors.  This package is not meant as a substitute for \texttt{Sweave}, but as a simpler alternative that produces reports compatible with Microsoft Word and other popular word processors.  This vignette demonstrates some of the functions in a larger context than the help file examples.
+
+
+\section{Usage}
+
+First, load the package.
+
+<<>>=
+library(rtf)
+@
+
+
+Now, we can use the \texttt{RTF} function to initialize an RTF object and return a reference for all subsequent methods.  You may notice that the parameters for this method are similar to those used in \texttt{base} plots.  We can define the RTF page width and height (in inches), the default font size (in points), and the outer page margins (in inches).
+
+<<>>=
+output<-"rtf_vignette.doc"   # although this is RTF, we can use the
+                             # .doc extension so it opens in MS Word
+rtf<-RTF(output,width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
+
+# Other rtf commands here...
+
+done(rtf)                    # writes and closes the file
+@
+
+
+
+\section{Text}
+
+\subsection{Basic Text}
+There are three ways to output text to an RTF document: \texttt{addHeader}, \texttt{addParagraph}, \texttt{startParagraph}/\texttt{addText}/\texttt{endParagraph}.  These are very similar, but some differences are outlined below.
+
+First, we can create a new section with a title in bold followed by either a subtitle or the section text in normal text.
+<<>>=
+addHeader(rtf,title="Section Header",
+	      subtitle="This is the subheading or section text.")
+@
+
+
+If a header is not necessary, a self-contained paragraph can be created with the \texttt{addParagraph} method.
+<<>>=
+addParagraph(rtf,"This is a new self-contained paragraph.\n")
+@
+
+
+Alternatively, we may define a paragraph start and end.  Text may be inserted between these methods using the \texttt{addText} function.
+
+<<>>=
+startParagraph(rtf)
+addText(rtf,"This text was added with the addText command.  ")
+addText(rtf,"You can add styled text too.  ",bold=TRUE,italic=TRUE)
+addText(rtf,"You must end the paragraph manually.")
+endParagraph(rtf)
+@
+
+
+\subsection{New Lines}
+There are a couple ways to insert new lines within the text.  First, you may use ``\texttt{\textbackslash n}'' within any string.  Alternatively, you may insert a new line using the \texttt{addNewLine} function.
+
+<<>>=
+addNewLine(rtf)
+@
+
+
+
+
+\subsection{Unicode and Greek Characters}
+Uppercase and lowercase Greek characters may be used in any string but must be encoded in a specific manner.  The implementation mimics syntax used for encoding Unicode characters in HTML 4.0.  
+
+For example, to export uppercase Alpha through Epsilon, we can use the follow code.
+
+<<>>=
+addParagraph(rtf,"&Alpha; &Beta; &Gamma; &Delta; &Epsilon;\n\n")
+@
+
+For lowercase, we use the following.
+
+<<>>=
+addParagraph(rtf,"&alpha; &beta; &gamma; &delta; &epsilon;\n\n")
+@
+
+
+Other Unicode characters are supported through specific HTML equivalents.  These are defined at \url{http://www.w3.org/TR/html4/sgml/entities.html}.  Unicode characters may be encoded directly using the Unicode decimal value.  For example, to encode three heart shapes, we use the following combination of Unicode and RTF syntax. 
+
+<<>>=
+addParagraph(rtf,"\\u9829\\3 \\u9829\\3 \\u9829\\3\n\n")
+@
+
+
+\subsection{URLs}
+URLs are not currently supported, but will be in a future version.
+
+
+
+
+
+
+
+\subsection{Mathematical Formulae}
+Unfortunately, support for mathematical formulae is not part of the RTF specification.  This package is not recommended for heavy use of formulae and cannot produce output on par with \texttt{Sweave}.
+
+
+\subsection{RTF Code}
+Native RTF may be used directly within any text block buy simply adding a backslash to the RTF commands.  For example, the following demonstrates two ways to style bold text using native RTF commands, ``\texttt{\textbackslash b}'' and ``\texttt{\textbackslash b0}''.  The full RTF specificaiton of RTF syntax is available at \url{http://www.microsoft.com/en-us/download/details.aspx?id=10725}.
+
+<<>>=
+addParagraph(rtf,"Normal, \\b this is bold\\b0, normal.\n")
+@
+
+or alternatively, with curly brackets to contain the code,
+<<>>=
+addParagraph(rtf,"Normal, {\\b\\i bold-italic}, normal.\n")
+@
+
+When incorporating native RTF code, it is important to pay attention to spacing in the RTF syntax.  Improper spacing can cause MS Word parser errors that are difficult to debug.
+
+
+\section{Formatting}
+Currently, document formatting with the \texttt{rtf} package functions is limited.  There are, however, a few useful methods.  In addition, all of the native RTF syntax is available for more complex document formatting.
+
+Three functions that allow changes in text placement include: \texttt{increaseIndent} to indent text or figures, \texttt{decreaseIndent} to move the indentation to the left, and \texttt{addPageBreak} that allows changes in page orientation and margins in the middle of a document.
+
+
+
+\section{Tables}
+The \texttt{addTable} function may be used to add tabular data to an RTF report from a \texttt{data.frame} or any data that can be coerced to a \texttt{data.frame}.  For tables with specific formatting requirements, it is recommended to format the table data before passing to the \texttt{addTable} function.  This function will guess the best column widths to use, but also allows the user to specify column widths.
+
+
+For example we can insert a table based on the \texttt{iris} data below.
+
+<<>>=
+tab<-as.data.frame(head(iris)) # create a data.frame
+colnames(tab)<-gsub("\\."," ",colnames(tab)) # format column names
+@
+
+<<label=tab1,echo=FALSE,results=tex>>=
+library(xtable)
+print(xtable(tab), table.placement = "!htbp")
+@
+
+<<>>=
+addTable(rtf,tab,font.size=9,row.names=FALSE,NA.string="-")
+@
+
+
+
+We may also want to output a table from the \texttt{table} command, such as the following.
+<<>>=
+tab<-table(iris$Species,floor(iris$Sepal.Length))
+names(dimnames(tab))<-c("Species","Sepal Length")
+@
+
+<<label=tab2,echo=FALSE,results=tex>>=
+print(xtable(tab), table.placement = "!htbp")
+@
+
+Here we can specify the columns widths and a string to substitute for \texttt{NA} values.
+<<>>=
+addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-",
+             col.widths=c(1,0.5,0.5,0.5,0.5) )
+@
+
+
+\section{Figures}
+Figures and graphics may be inserted into the RTF document as easily as text.  One limitation of the RTF specification is that vector-based image formats (e.g. EPS or PDF) are undefined except for Microsoft's proprietary WMF and EMF formats.  For this reason the \texttt{rtf} package uses raster-based PNG files for inserting figures into RTF documents.  The resolution for these images may be set to any value; however, for publication, it is recommended that users independently export figures as PDF.
+
+
+The basic approach for adding plots is the \texttt{addPlot} function.  This command takes a plot function as a paramater, along with specific RTF parameters, and then any other parameters to be sent to the plot function.  The syntax is as follows, where ``\texttt{...}'' represents all parameters to be passed to the \texttt{plot.fun} function.  Notice how we define the plot width and height (in inches), along with the desired resolution (in dots per inch).
+
+<<echo=true, results=hide, eval=false>>=
+addPlot(RTF.object, plot.fun=plot.fun, width=4, height=5, res=300, ...)
+@
+
+
+\subsection{\texttt{base} Plots}
+For \texttt{base} graphics plots, we can use the \texttt{addPlot} in two ways.  First we can directly use the plot function in the \texttt{addPlot} function.  Below, we simply use \texttt{R}'s \texttt{plot} function.
+
+<<fig=TRUE>>=
+plot(iris[,1],iris[,2])
+@
+
+To add this plot to the document, we use the following.
+
+<<>>=
+addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
+@
+
+Alternatively, we can wrap a more complex plot that has several steps into a function that takes any number of parameters.
+
+<<fig=TRUE>>=
+newPlot<-function() {
+	par(pty="s",cex=0.7)      # adjust plot style
+	plot(iris[,1],iris[,2])
+	abline(h=2.5,v=6.0,lty=2) # add some lines
+}
+
+newPlot()
+@
+
+Then we add this plot to the document with the following.  Note in this case there are no extra \texttt{plot.fun} parameters to pass along, but the function may be rewritten to accept any parameters to promote reuse of plotting code.
+
+<<>>=
+addPlot(rtf,plot.fun=newPlot,width=6,height=6,res=300)
+@
+
+
+\subsection{\texttt{lattice} Plots}
+The \texttt{lattice} package enables trellis plots for visualizing relationships between variables of complex data sets.  To create the output for RTF, we just assign the \texttt{lattice} plot to a variable.  The \texttt{print} function may then be used to visualize the plot.
+
+
+<<fig=TRUE>>=
+library(lattice)
+p <- histogram( ~ height | voice.part, data = singer, xlab="Height")
+print(p)
+@
+
+To include this plot in the RTF document we again call the \texttt{addPlot} method.  However, for \texttt{lattice} plots, we pass \texttt{print} as the \texttt{plot.fun} function and use the \texttt{p} variable as a parameter for this function.  Below is an example that specifies the plot width and height (in inches), along with the desired resolution (in dots per inch).
+
+<<>>=
+addPlot(rtf,plot.fun=print,width=5,height=5,res=300,p)
+@
+
+
+Alternatively, we can use the \texttt{addTrellisObject} method with \texttt{lattice} plots.  The \texttt{addTrellisObject} method is suited for multi-page trellis objects and will create an image for each page in the RTF document.  It also works for single page images as well.
+
+<<fig=TRUE>>=
+p2 <- densityplot( ~ height | voice.part, data = singer, xlab = "Height")
+print(p2)
+@
+
+<<>>=
+addTrellisObject(rtf,trellis.object=p2,width=5,height=5,res=300)
+@
+
+
+<<fig=TRUE>>=
+p3<-xyplot(uptake ~ conc | Plant, CO2, layout = c(2,2))
+print(p3) # note this is a multipage lattice plot
+          # but Sweave only shows the first plot
+@
+
+<<>>=
+addTrellisObject(rtf,trellis.object=p3,width=6,height=6,res=300)
+@
+
+
+\subsection{\texttt{ggplot2} Plots}
+The \texttt{ggplot2} package is an alternative to \texttt{base} and \texttt{lattice} graphics and is an implementation of Leland Wilkinson's Grammar of Graphics.  Below is code that creates a simple \texttt{ggplot2} plot and stores a representation in a variable called, \texttt{mt}.  The \texttt{print} function may then be used to visualize the plot.
+
+\begin{center}
+<<fig=TRUE>>=
+# plot
+library(ggplot2)
+mt <- ggplot(mtcars, aes(mpg, wt, colour = factor(cyl))) + geom_point()
+print(mt)
+@
+\end{center}
+
+
+To include this plot in the RTF document we again call the \texttt{addPlot} method.  Just as with \texttt{lattice} trellis plots, we pass \texttt{print} as the \texttt{plot.fun} function and use the \texttt{mt} variable as a parameter for this function.
+
+
+<<>>=
+addPlot(rtf,plot.fun=print,width=5,height=4,res=300, mt)
+@
+
+
+\subsection{External Figures}
+The \texttt{rtf} package also supports incorporation of existing PNG images generated by \texttt{R} or any other software.  The code below demonstrates how to do this by pointing to the image file and specifying the desired output size.
+
+<<echo=true, results=hide, eval=false>>=
+addPng(rtf, "foo.png", width=5, height=5)
+@
+
+
+
+\section{Output}
+When an RTF document is complete, you close and write the document with the \texttt{done} command.  It may take some time to run depending on the document complexity and number of figures.  It is also customary to include information about the \texttt{R} session in reports.  For this we use the \texttt{addSessionInfo} method.  For example, the following code creates a page break, adds nicely formatted session information, and writes the RTF document.
+
+<<>>=
+addPageBreak(rtf, width=8.5, height=11, omi=c(1,1,1,1))
+
+addSessionInfo(rtf)
+done(rtf)
+@
+
+
+
+\end{document}

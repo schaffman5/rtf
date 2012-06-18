@@ -21,10 +21,16 @@
 
  \usage{\method{done}{RTF}(this, ...)}
 
+ \arguments{
+ 	\item{this}{An RTF object.}
+ 	\item{...}{Not used.}
+ }
+
  \author{Michael E. Schaffer}
 
  \seealso{
  	For more information see \code{\link{RTF}}.
  }
-\keyword{internal}
+
+
 \keyword{methods}

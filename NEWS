@@ -1,3 +1,9 @@
+CHANGES IN 0.4-5 (2012-04-11)
+-----------------------------
+Corrected an incorrect Greek symbol substitution and added support for full Greek alphabet.
+Fixed hidden method documentation with Rdoc annotation: @keyword -internal
+Added package vignette.
+
 CHANGES IN 0.4-4 (2012-04-11)
 -----------------------------
 Added documentation to output ggplot2 plots.

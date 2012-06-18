@@ -25,7 +25,6 @@
  	\item{this}{An RTF object.}
  	\item{width}{New page width in inches. \bold{optional}.}
  	\item{height}{New page height in inches. \bold{optional}.}
- 	\item{font.size}{New default font size in points. \bold{optional}.}
  	\item{omi}{A \code{\link[base]{vector}} of page margins (botton, left, top, right) \bold{optional}.}
  	\item{...}{Not used.}
  }
@@ -41,5 +40,6 @@
  \seealso{
  	For more information see \code{\link{RTF}}.
  }
-\keyword{internal}
+
+
 \keyword{methods}

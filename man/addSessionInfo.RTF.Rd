@@ -42,5 +42,6 @@
  \seealso{
    For more information see \code{\link{RTF}}., \code{\link{sessionInfo}}.
  }
-\keyword{internal}
+
+
 \keyword{methods}
