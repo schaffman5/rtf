@@ -1,4 +1,8 @@
-CHANGES IN 0.4-5 (2012-04-11)
+CHANGES IN 0.4-6 (2012-06-19)
+-----------------------------
+Added xtable to suggests list.
+
+CHANGES IN 0.4-5 (2012-06-17)
 -----------------------------
 Corrected an incorrect Greek symbol substitution and added support for full Greek alphabet.
 Fixed hidden method documentation with Rdoc annotation: @keyword -internal
