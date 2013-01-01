@@ -115,9 +115,13 @@ setConstructorS3("RTF",
 # 	\item{this}{An RTF object.}
 # 	\item{dat}{A matrix, data frame, or table.}
 #	\item{col.widths}{A @vector of column widths in inches. \bold{optional}.}
+#	\item{col.justify}{A single value or @vector of column justifications ('L', 'R', 'C', or 'J' for Left, Right, Center, and Justify, respectively). \bold{optional}.}
+#	\item{header.col.justify}{A single value or @vector of table header column justifications ('L', 'R', 'C', or 'J' for Left, Right, Center, and Justify, respectively). \bold{optional}.}
 #	\item{font.size}{Font size in points. \bold{optional}.}
 #	\item{row.names}{Boolean argument to include row names in tables. \bold{optional}.}
 #	\item{NA.string}{A character string to replace NA values in the table.}
+#	\item{space.before}{Space before each row (in inches). \bold{optional}.}
+#	\item{space.after}{Space after each row (in inches). \bold{optional}.}
 # 	\item{...}{Not used.}
 # }
 #
@@ -141,12 +145,12 @@ setConstructorS3("RTF",
 # 
 # @keyword -internal
 #*/###########################################################################
-setMethodS3("addTable", "RTF", function(this,dat,col.widths=NULL,font.size=NULL,row.names=FALSE,NA.string="-", ...) {
+setMethodS3("addTable", "RTF", function(this,dat,col.widths=NULL,col.justify=NULL,header.col.justify=NULL,font.size=NULL,row.names=FALSE,NA.string="-", space.before=NULL, space.after=NULL, ...) {
 	if(is.null(font.size)) {
 		font.size = this$.font.size  # default
 	}
 	
-	this$.rtf <- paste(this$.rtf, .add.table(dat,col.widths,font.size,row.names,indent=this$.indent,NA.string=NA.string,max.table.width=this$.content.width, ...),sep="")
+	this$.rtf <- paste(this$.rtf, .add.table(dat,col.widths,col.justify,header.col.justify,font.size,row.names,indent=this$.indent,NA.string=NA.string,max.table.width=this$.content.width, space.before=space.before, space.after=space.after, ...),sep="")
 })
 
 #########################################################################/**
@@ -207,9 +211,51 @@ setMethodS3("view", "RTF", function(this, ...) {
 # @keyword -internal
 #*/#########################################################################
 setMethodS3("done", "RTF", function(this, ...) {
-	this$.rtf <- paste(this$.rtf,.end.rtf(),sep="")
-	write(this$.rtf,this$.file)
+	#this$.rtf <- paste(this$.rtf,.end.rtf(),sep="")
+	#write(this$.rtf,this$.file)
+	
+	# write the file, but don't close it out so that we can continue to 
+	# add to the object and write it out again.
+	write(paste(this$.rtf,.end.rtf(),sep=""),this$.file)
 })
+
+
+#########################################################################/**
+# @RdocMethod addTOC
+#
+# @title "Insert table of contents field"
+#
+# \description{
+#	@get "title".
+# }
+#
+# @synopsis
+#
+# \arguments{
+# 	\item{this}{An RTF object.}
+# 	\item{...}{Not used.}
+# }
+#
+# @author
+#
+# \seealso{
+#   @seeclass
+# }
+# 
+# @keyword -internal
+#*/#########################################################################
+setMethodS3("addTOC", "RTF", function(this,...) {
+	toc<-"{\\field\\flddirty\\fldedit{\\*\\fldinst TOC f h}{\\fldrslt Update Field (right-click in MS Word) to show Table of Contents}}\\line\\line"
+	
+	if(!is.null(this$.font.size)) {
+		font.size = this$.font.size  # default
+	}
+	
+	this$.rtf <- paste(this$.rtf,.start.paragraph(indent=this$.indent,font.size=font.size),sep="")
+	this$.rtf <- paste(this$.rtf,toc,sep="")
+	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
+})
+
 
 #########################################################################/**
 # @RdocMethod addHeader
@@ -227,6 +273,7 @@ setMethodS3("done", "RTF", function(this, ...) {
 #   \item{title}{Header title text.}
 #   \item{subtitle}{Header subtitle text. \bold{optional}.}
 #	\item{font.size}{Font size in points. \bold{optional}.}
+#	\item{TOC.level}{Indent level for table of contents. \bold{optional}.}
 # 	\item{...}{Not used.}
 # }
 #
@@ -238,13 +285,15 @@ setMethodS3("done", "RTF", function(this, ...) {
 # 
 # @keyword -internal
 #*/#########################################################################
-setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NULL,...) {
+setMethodS3("addHeader", "RTF", function(this, title,subtitle=NULL,font.size=NULL,TOC.level=NULL,...) {
 	if(is.null(font.size)) {
 		font.size = this$.font.size  # default
 	}
 	
-	this$.rtf <- paste(this$.rtf,.add.header(title,subtitle=subtitle,indent=this$.indent,font.size=font.size),sep="")
+	this$.rtf <- paste(this$.rtf,.add.header(title,subtitle=subtitle,indent=this$.indent,font.size=font.size,TOC.level=TOC.level),sep="")
 })
+
+
 
 #########################################################################/**
 # @RdocMethod addText
@@ -428,6 +477,7 @@ setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,
 #
 # \arguments{
 # 	\item{this}{An RTF object.}
+# 	\item{n}{Number of lines to add. Default is 1. \bold{optional}}
 # 	\item{...}{Not used.}
 # }
 #
@@ -439,8 +489,8 @@ setMethodS3("addPageBreak", "RTF", function(this, width=8.5,height=11,omi=c(1,1,
 # 
 # @keyword -internal
 #*/#########################################################################
-setMethodS3("addNewLine", "RTF", function(this, ...) {
-	this$.rtf <- paste(this$.rtf,.add.newline(),sep="")
+setMethodS3("addNewLine", "RTF", function(this, n=1, ...) {
+	this$.rtf <- paste(this$.rtf,.add.newline(n=n,font.size=this$.font.size),sep="")
 })
 
 #########################################################################/**
@@ -574,8 +624,15 @@ setMethodS3("setFontSize", "RTF", function(this, font.size, ...) {
 # @keyword -internal
 #*/#########################################################################
 setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0.3,res=300, ...) {
+	if(!is.null(this$.font.size)) {
+		font.size = this$.font.size  # default
+	}
+	
 	tmp.file<-tempfile("temp_rtf_plot")
+	this$.rtf <- paste(this$.rtf,.start.paragraph(indent=this$.indent,font.size=font.size),sep="")
 	this$.rtf <- paste(this$.rtf,.rtf.plot(plot.fun=plot.fun,tmp.file=tmp.file,width=width,height=height,res=res, ...),sep="")
+	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
+	
 	if(file.exists(tmp.file) ) {
 		unlink(tmp.file)
 	}
@@ -613,7 +670,13 @@ setMethodS3("addPlot", "RTF", function(this,plot.fun=plot.fun,width=3.0,height=0
 # @keyword -internal
 #*/#########################################################################
 setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
+	if(!is.null(this$.font.size)) {
+		font.size = this$.font.size  # default
+	}
+	
+	this$.rtf <- paste(this$.rtf,.start.paragraph(indent=this$.indent,font.size=font.size),sep="")
 	this$.rtf <- paste(this$.rtf,.add.png(file,width=width,height=height,verbose=FALSE),sep="")
+	this$.rtf <- paste(this$.rtf,.end.paragraph(),sep="")
 })
 
 #########################################################################/**
@@ -716,7 +779,7 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
     nspkgver <- sapply(si$loadedOnly, function(x) x$Version)
 	
 	startParagraph(this)
-	addText(this,"Session Information",bold=TRUE)
+	addText(this,"\\s1 Session Information",bold=TRUE)
 	endParagraph(this)
 	
 	startParagraph(this)
@@ -776,7 +839,7 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 ######################################################################################
 
 .start.rtf<-function(width=8.5,height=11,omi=c(1,1,1,1)) {
-	paste("{\\rtf1\\ansi\n\\deff",.add.font.table(),.add.paper.size(width=width,height=height),"\n",.add.page.margins(omi),"\n",sep="")
+	paste("{\\rtf1\\ansi\n\\deff",.add.font.table(),.add.paper.size(width=width,height=height),"\n",.add.page.margins(omi),"\n",.add.page.numbers(),"\n",sep="")
 }
 
 .add.font.table<-function() {
@@ -790,6 +853,10 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	paste("{\\fonttbl",paste(fonts,collapse="\n"),"}",sep="\n")
 }
 
+.add.page.numbers<-function() {
+	paste("\\titlepg\\headery720\\footery720","{\\footer {\\pard\\qc\\fi0\\li0 \\f2\\fs20 \\field{\\fldinst{page}} \\par}}",sep="\n")
+}
+
 .add.paper.size<-function(width=8.5,height=11) {
 	paste("\\paperw",round(width*1440,0),"\\paperh",round(height*1440,0),"\\widowctrl\\ftnbj\\fet0\\sectd",if(width>height){"\\lndscpsxn"} else {""},"\\linex0",sep="")
 }
@@ -798,16 +865,26 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	paste("\\margl",round(margins[2]*1440,0),"\\margr",round(margins[4]*1440,0),"\\margt",margins[3]*1440,"\\margb",margins[1]*1440,sep="")
 }
 
-.add.header<-function(title,subtitle=NULL,indent=0,font.size=10) {
+.add.header<-function(title,subtitle=NULL,indent=0,font.size=10,TOC.level=NULL) {
 	if(is.null(subtitle)) {
-		paste("{\\pard\\fi0\\li",indent,"\\f2\\fs",font.size*2,"\\b ",.convert(title),"\\b0\\line\\par}\n",sep="")
+		paste("{\\pard\\fi0\\li",indent,"\\f2\\fs",font.size*2,"\\b",.get.TOC.level(TOC.level)," ",.convert(title),"\\b0\\line\\par}\n",sep="")
 	} else {
-		paste("{\\pard\\fi0\\li",indent,"\\f2\\fs",font.size*2,"\\b ",.convert(title),"\\b0\\line\n\\fi0\\f2\\fs",font.size*2," ",.convert(subtitle),"\\line\\par}\n",sep="")
+		paste("{\\pard\\fi0\\li",indent,"\\f2\\fs",font.size*2,"\\b",.get.TOC.level(TOC.level)," ",.convert(title),"\\b0\\par}\n{\\pard\\fi0\\f2\\fs",font.size*2," ",.convert(subtitle),"\\line\\par}\n",sep="")
 	}
 }
 
+.get.TOC.level<-function(section.level) {
+	ret<-""
+	
+	if(!is.null(section.level)) {
+		ret<-paste("\\s",section.level,sep="")
+	}
+	
+	ret
+}
+
 .start.paragraph<-function(indent=0,font.size=10) {
-	paste("{\\pard\\fi0\\li",indent," \\f2\\fs",font.size*2,"\n",sep="")
+	paste("{\\pard\\fi0\\li",indent,"\\f2\\fs",font.size*2,"\n",sep="")
 }
 
 .add.text<-function(x) {
@@ -822,14 +899,39 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	paste("}",sep="")
 }
 
-.add.table.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),justify="LEFT",font.size=12,last.row=FALSE,indent=0, border.top=FALSE, border.bottom=FALSE) {
+.add.table.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),col.justify=NULL,font.size=10,last.row=FALSE,indent=0, border.top=FALSE, border.bottom=FALSE,space.before=NULL, space.after=NULL) {
 	header<-paste("\\trowd\\trgaph100\\trleft",indent,sep="")  # trqc for centered
 	
-	justify.q<-"\\ql"
-	if(justify=="LEFT") justify.q<-"\\ql"
-	if(justify=="RIGHT") justify.q<-"\\qr"
-	if(justify=="CENTER") justify.q<-"\\qc"
-	if(justify=="JUSTIFIED") justify.q<-"\\qj"
+	if(length(col.data) != length(col.widths)) {
+		stop(paste("The number of data columns (",length(col.data),") doesn't match the column widths (",length(col.widths),")!  Input data: ",col.data,sep=""))
+	}
+	
+	justify<-vector()
+	justify["L"]<-"\\ql"
+	justify["R"]<-"\\qr"
+	justify["C"]<-"\\qc"
+	justify["J"]<-"\\qj"
+	
+	# Default: Left justify everything except numeric which are right justified
+	justify.v<-rep(justify["L"],length(col.data))
+	numeric.cols<-which(!is.na(suppressWarnings(as.numeric(col.data))))
+	if(length(numeric.cols)>0) { justify.v[numeric.cols] <- justify["R"] }
+	
+	if(!is.null(col.justify)) {	
+		if(length(col.justify)==1) {
+			if(col.justify %in% names(justify)) {
+				justify.v<-rep(justify[col.justify],length(col.data))
+			} else {
+				stop(paste("col.justify parameter not recognized: ",col.justify," (should be L, R, C, or J)",sep=""))
+			}
+		} else if(length(col.justify)==length(col.data)) {
+			justify.v<-justify[col.justify]
+		} else {
+			stop(paste("The number of data columns (",length(col.data),") doesn't match the col.justify (",length(col.justify),") parameter!  Input data: ",paste(col.data,sep="",collapse=", "),sep=""))
+		}
+	}
+	
+	# TODO: allow decimal alignment: RTF code: \tqdec\tx810 (where the tx part is the tabbed position)
 	
 	btop<-""
 	bbottom<-""
@@ -837,20 +939,38 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	if(border.top == TRUE) btop <- "\\clbrdrt\\brdrs\\brdrw15"
 	if(last.row==TRUE | border.bottom==TRUE) bbottom <- "\\clbrdrb\\brdrs\\brdrw15"
 	
-	cols.prefix<-paste("\\clvertalc \\clshdrawnil \\clwWidth",round(col.widths*1440,0),"\\clftsWidth3 \\clheight260 \\clpadl100 \\clpadr100 \\gaph",btop," ",bbottom ,"\\cellx",c(1:length(col.widths)),"\n",sep="",collapse="")
-	cols<-paste("\\pard",justify.q,"\\widctlpar\\intbl\\fi0\\f2\\fs",font.size*2," ",.convert(col.data),"\\cell\n",sep="",collapse="")
-	end.row<-"\\widctlpar\\intbl \\row \n\n"
+	# Top vertical alignment for rows (clvertalt)
+	cols.prefix<-paste("\\clvertalt\\clshdrawnil\\clwWidth",round(col.widths*1440,0),"\\clftsWidth3\\clheight260\\clpadl100\\clpadr100\\gaph",btop,bbottom ,"\\cellx",c(1:length(col.widths)),"\n",sep="",collapse="")
+	cols<-paste("\\pard",justify.v, .get.space.before.after(space.before, space.after),"\\widctlpar\\intbl\\fi0\\f2\\fs",font.size*2," ", .convert(col.data),"\\cell\n",sep="",collapse="")
+	end.row<-"\\widctlpar\\intbl\\row\n"
 	paste(header,cols.prefix,cols,end.row,sep="")
 }
 
-.add.merged.table.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),justify="LEFT",font.size=12,last.row=FALSE,indent=0, border.top=FALSE, border.bottom=FALSE) {
+.get.space.before.after<-function(space.before=NULL,space.after=NULL) {
+	ret<-""
+	
+	# \sbN -- N twips of extra (vertical) space before this paragraph (default: 0)
+	# \saN -- N twips of extra (vertical) space after this paragraph (default: 0)
+	
+	if(!is.null(space.before)) {
+		ret<-paste(ret,"\\sb",(space.before*1440),sep="")
+	}
+	
+	if(!is.null(space.after)) {
+		ret<-paste(ret,"\\sa",(space.after*1440),sep="")
+	}
+	
+	ret
+}
+
+.add.merged.table.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),justify="LEFT",font.size=10,last.row=FALSE,indent=0, border.top=FALSE, border.bottom=FALSE) {
 	header<-paste("\\trowd\\trgaph100\\trleft",indent,sep="")  # trqc for centered
 	
 	justify.q<-"\\ql"
 	if(justify=="LEFT") justify.q<-"\\ql"
 	if(justify=="RIGHT") justify.q<-"\\qr"
 	if(justify=="CENTER") justify.q<-"\\qc"
-	if(justify=="JUSTIFIED") justify.q<-"\\qj"
+	if(justify=="JUSTIFY") justify.q<-"\\qj"
 	
 	btop<-""
 	bbottom<-""
@@ -866,23 +986,47 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	paste(header,cols.prefix,cols,end.row,sep="")
 }
 
-.add.table.header.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),justify="LEFT",font.size=12,repeat.header=FALSE,indent=0) {
+.add.table.header.row<-function(col.data=c("c1","c2","c3"),col.widths=c(1.0,4.5,1.0),col.justify=NULL,font.size=10,repeat.header=FALSE,indent=0) {
 	header<-paste("\\trowd\\trgaph100\\trleft",indent,sep="")  # trqc for centered
-	justify.q="\\ql"
-	if(justify=="LEFT") justify.q="\\ql"
-	if(justify=="RIGHT") justify.q="\\qr"
-	if(justify=="CENTER") justify.q="\\qc"
-	if(justify=="JUSTIFIED") justify.q="\\qj"
+
+		if(length(col.data) != length(col.widths)) {
+		stop(paste("The number of data columns (",length(col.data),") doesn't match the column widths (",length(col.widths),")!  Input data: ",col.data,sep=""))
+	}
+	
+	justify<-vector()
+	justify["L"]<-"\\ql"
+	justify["R"]<-"\\qr"
+	justify["C"]<-"\\qc"
+	justify["J"]<-"\\qj"
+	
+	# Default: Left justify everything
+	justify.v<-rep(justify["L"],length(col.data))
+	
+	if(!is.null(col.justify)) {	
+		if(length(col.justify)==1) {
+			if(col.justify %in% names(justify)) {
+				justify.v<-rep(justify[col.justify],length(col.data))
+			} else {
+				stop(paste("header.col.justify parameter not recognized: ",col.justify," (should be L, R, C, or J)",sep=""))
+			}
+		} else if(length(col.justify)==length(col.data)) {
+			justify.v<-justify[col.justify]
+		} else {
+			stop(paste("The number of data columns (",length(col.data),") doesn't match the header.col.justify (",length(col.justify),") parameter!  Input data: ",paste(col.data,sep="",collapse=", "),sep=""))
+		}
+	}
+
 	if(repeat.header==TRUE) header<-paste(header,"\\trhdr")
 	
-	cols.prefix<-paste("\\clvertalc\\clshdrawnil\\clwWidth",round(col.widths*1440,0),"\\clftsWidth3\\clheight260\\clpadl100\\clpadr100\\gaph\\clbrdrt\\brdrs\\brdrw15\\clbrdrb\\brdrs\\brdrw15\\cellx",c(1:length(col.widths)),"\n",sep="",collapse="")
-	cols<-paste("\\pard",justify.q,"\\widctlpar\\intbl\\fi0\\f2\\fs",font.size*2,"\\b ",.convert(col.data),"\\b0\\cell\n",sep="",collapse="")
+	# Bottom vertical alignment for headers (clvertalb)
+	cols.prefix<-paste("\\clvertalb\\clshdrawnil\\clwWidth",round(col.widths*1440,0),"\\clftsWidth3\\clheight260\\clpadl100\\clpadr100\\gaph\\clbrdrt\\brdrs\\brdrw15\\clbrdrb\\brdrs\\brdrw15\\cellx",c(1:length(col.widths)),"\n",sep="",collapse="")
+	cols<-paste("\\pard",justify.v,"\\widctlpar\\intbl\\fi0\\f2\\fs",font.size*2,"\\b ",.convert(col.data),"\\b0\\cell\n",sep="",collapse="")
 	end.row<-"\\widctlpar\\intbl\\row\n\n"
 	paste(header,cols.prefix,cols,end.row,sep="")
 }
 
 
-.add.table<-function(dat,col.widths=NULL,font.size=12,row.names=FALSE,indent=0,NA.string="-",max.table.width=NULL) {
+.add.table<-function(dat,col.widths=NULL,col.justify=NULL,header.col.justify=NULL,font.size=10,row.names=FALSE,indent=0,NA.string="-",max.table.width=NULL, space.before=NULL, space.after=NULL) {
 	ret<-"{\\pard\n"
 	
 	if("table" %in% class(dat)) {
@@ -894,17 +1038,17 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 			
 			if(is.null(col.widths)){ col.widths<-rep(6.5/nc,nc)}
 			
-			ret<-paste(ret,.add.table.header.row(c(names(dimnames(dat))[1]," "),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
+			ret<-paste(ret,.add.table.header.row(c(names(dimnames(dat))[1]," "),col.widths,header.col.justify,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 			
 			if(nrow(dat)>1) {
 				for(i in 1:(nrow(dat)-1) ) {
 					rn<-rownames(dat)[i]
-					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i])),col.widths,font.size=font.size,indent=indent),sep="")
+					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i])),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
 				}
 			}
 			
 			rn<-rownames(dat)[nrow(dat)]
-			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat)])),col.widths,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
+			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat)])),col.widths,col.justify,font.size=font.size,indent=indent,border.bottom=TRUE, space.before=space.before, space.after=space.after),sep="")
 		
 		} else if(length(dim(dat))==2) {
 			varnames<-names(dimnames(dat))
@@ -916,17 +1060,17 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 			# ret<-paste(ret,.add.table.header.row(c(" ",colnames(dat)),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 			
 			ret<-paste(ret,.add.merged.table.row(c(" ",paste("\\b ",varnames[2]," \\b0",sep=""),rep(" ",nc-2)),col.widths,font.size=font.size,indent=indent,border.top=TRUE),sep="")
-			ret<-paste(ret,.add.table.row(c(paste("\\b ",varnames[1]," \\b0",sep=""),colnames(dat)),col.widths,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
+			ret<-paste(ret,.add.table.row(c(paste("\\b ",varnames[1]," \\b0",sep=""),colnames(dat)),col.widths,col.justify,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
 			
 			if(nrow(dat)>1) {
 				for(i in 1:(nrow(dat)-1) ) {
 					rn<-rownames(dat)[i]
-					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i,])),col.widths,font.size=font.size,indent=indent),sep="")
+					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i,])),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
 				}
 			}
 			
 			rn<-rownames(dat)[nrow(dat)]
-			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat),])),col.widths,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
+			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat),])),col.widths,col.justify,font.size=font.size,indent=indent,border.bottom=TRUE, space.before=space.before, space.after=space.after),sep="")
 		
 		} else {
 			stop("Table dimensions can't be written")
@@ -942,21 +1086,21 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		# ret<-paste(ret,.add.table.header.row(c(" ",colnames(dat)),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 		
 		ret<-paste(ret,.add.merged.table.row(c(" ",paste("\\b ",dat$varnames[2]," \\b0",sep=""),rep(" ",nc-2)),col.widths,font.size=font.size,indent=indent,border.top=TRUE),sep="")
-		ret<-paste(ret,.add.table.row(c(paste("\\b ",dat$varnames[1]," \\b0",sep=""),colnames(dat$counts),"Total"),col.widths,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
+		ret<-paste(ret,.add.table.row(c(paste("\\b ",dat$varnames[1]," \\b0",sep=""),colnames(dat$counts),"Total"),col.widths,col.justify,font.size=font.size,indent=indent,border.bottom=TRUE),sep="")
 		grand.total<-sum(dat$col.margin)
 		
 		if(nrow(dat$counts)>1) {
 			for(i in 1:(nrow(dat$counts)) ) {
 				rn<-rownames(dat$counts)[i]
-				ret<-paste(ret,.add.table.row(c(rn,as.character(dat$counts[i,]),paste( dat$row.margin[i]," (",sprintf("%0.1f",dat$row.margin[i]/grand.total*100),"%)" ,sep="")),col.widths,font.size=font.size,indent=indent),sep="")
-				ret<-paste(ret,.add.table.row(c(" ",paste("(",sprintf("%0.1f",dat$counts[i,]/dat$row.margin[i]*100),"% R)",sep="")," "),col.widths,font.size=font.size,indent=indent),sep="")
-				ret<-paste(ret,.add.table.row(c(" ",paste("(",sprintf("%0.1f",dat$counts[i,]/dat$col.margin*100),"% C)",sep="")," "),col.widths,font.size=font.size,indent=indent),sep="")
-				ret<-paste(ret,.add.table.row(rep(" ",nc),col.widths,font.size=font.size,indent=indent),sep="")
+				ret<-paste(ret,.add.table.row(c(rn,as.character(dat$counts[i,]),paste( dat$row.margin[i]," (",sprintf("%0.1f",dat$row.margin[i]/grand.total*100),"%)" ,sep="")),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
+				ret<-paste(ret,.add.table.row(c(" ",paste("(",sprintf("%0.1f",dat$counts[i,]/dat$row.margin[i]*100),"% R)",sep="")," "),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
+				ret<-paste(ret,.add.table.row(c(" ",paste("(",sprintf("%0.1f",dat$counts[i,]/dat$col.margin*100),"% C)",sep="")," "),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
+				ret<-paste(ret,.add.table.row(rep(" ",nc),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
 			}
 		}
 		
 		# Total rows
-		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent),sep="")
+		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		
 	} else if ("data.frame" %in% class(dat) || "matrix" %in% class(dat)) {
 		# convert matrix to data frame
@@ -983,9 +1127,9 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		
 		if(is.null(col.widths)){ col.widths<-rep(6.5/nc,nc)}
 		if(row.names==TRUE){
-			ret<-paste(ret,.add.table.header.row(c(" ",colnames(dat)),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
+			ret<-paste(ret,.add.table.header.row(c(" ",colnames(dat)),col.widths,header.col.justify,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 		} else {
-			ret<-paste(ret,.add.table.header.row(colnames(dat),col.widths,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
+			ret<-paste(ret,.add.table.header.row(colnames(dat),col.widths,header.col.justify,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 		}
 		
 		# render the rows
@@ -993,25 +1137,25 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 			for(i in 1:(nrow(dat)-1)) {
 				if(row.names==TRUE){
 					rn<-rownames(dat)[i]
-					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i,])),col.widths,font.size=font.size,indent=indent),sep="")
+					ret<-paste(ret,.add.table.row(c(rn,as.character(dat[i,])),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
 				} else {
-					ret<-paste(ret,.add.table.row(as.character(dat[i,]),col.widths,font.size=font.size,indent=indent),sep="")
+					ret<-paste(ret,.add.table.row(as.character(dat[i,]),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
 				}
 			}
 		}
 		
 		if(row.names==TRUE){
 			rn<-rownames(dat)[nrow(dat)]
-			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat),])),col.widths,font.size=font.size,last.row=TRUE,indent=indent),sep="")
+			ret<-paste(ret,.add.table.row(c(rn,as.character(dat[nrow(dat),])),col.widths,col.justify,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		} else {
-			ret<-paste(ret,.add.table.row(as.character(dat[nrow(dat),]),col.widths,font.size=font.size,last.row=TRUE,indent=indent),sep="")
+			ret<-paste(ret,.add.table.row(as.character(dat[nrow(dat),]),col.widths,col.justify,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		}
 		
 	} else {
 		warning("No suitable RTF converter for object class!")
 	}
 	
-	ret<-paste(ret,"}",sep="\n")
+	ret<-paste(ret,"}\n\n",sep="")
 	ret
 }
 
@@ -1052,6 +1196,10 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 # 	x<-gsub("&Kappa;","\\\\u0922\\\\3",x) # convert &Kappa; to lowercase Greek kappa
 # 	x<-gsub("&Lambda;","\\\\u0923\\\\3",x) # convert &Lambda; to lowercase Greek lambda
 # 	x<-gsub("&Mu;","\\\\u0924\\\\3",x)     # convert &Mu; to lowercase Greek lambda
+	
+	# convert HTML characters
+	x<-gsub("&gt;",">",x)
+	x<-gsub("&lt;","<",x)
 	
 	# convert uppercase and lowercase Greek letters
 	x<-gsub("&Alpha;","\\\\u0913\\\\3",x)
@@ -1109,8 +1257,17 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 	x
 }
 
-.add.newline<-function() {
-	return(" \\line ")
+.add.newline<-function(n=NULL, font.size=10) {
+	# return("\\line ")
+
+	ret<-paste("{\\pard\\fi0\\f2\\fs",(font.size*2),sep="")
+	
+	if(is.null(n)) {
+		if(n>=2) {
+			ret<-paste(ret,paste(rep("\\line",n),"\n",collapse="",sep=""),sep="")
+		}
+	}
+	paste(ret,"\\par}",sep="")
 }
 
 .chunk.vector<-function(tokens,n=10) {

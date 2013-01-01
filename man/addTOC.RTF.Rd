@@ -6,24 +6,23 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{addNewLine.RTF}
-\alias{addNewLine.RTF}
-\alias{RTF.addNewLine}
-\alias{addNewLine.RTF}
-\alias{addNewLine,RTF-method}
+ \name{addTOC.RTF}
+\alias{addTOC.RTF}
+\alias{RTF.addTOC}
+\alias{addTOC.RTF}
+\alias{addTOC,RTF-method}
 
 
- \title{Insert a new line into the RTF document}
+ \title{Insert table of contents field}
 
  \description{
-	Insert a new line into the RTF document.
+	Insert table of contents field.
  }
 
- \usage{\method{addNewLine}{RTF}(this, n=1, ...)}
+ \usage{\method{addTOC}{RTF}(this, ...)}
 
  \arguments{
  	\item{this}{An RTF object.}
- 	\item{n}{Number of lines to add. Default is 1. \bold{optional}}
  	\item{...}{Not used.}
  }
 

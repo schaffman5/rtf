@@ -19,13 +19,14 @@
 	Insert a header into the RTF document.
  }
 
- \usage{\method{addHeader}{RTF}(this, title, subtitle=NULL, font.size=NULL, ...)}
+ \usage{\method{addHeader}{RTF}(this, title, subtitle=NULL, font.size=NULL, TOC.level=NULL, ...)}
 
  \arguments{
  	\item{this}{An RTF object.}
    \item{title}{Header title text.}
    \item{subtitle}{Header subtitle text. \bold{optional}.}
 	\item{font.size}{Font size in points. \bold{optional}.}
+	\item{TOC.level}{Indent level for table of contents. \bold{optional}.}
  	\item{...}{Not used.}
  }
 

@@ -1,3 +1,10 @@
+CHANGES IN 0.4-7 (2012-08-22)
+-----------------------------
+Added table of contents support.
+Added page number support in footers.
+Added right justify for numeric values in tables.
+Added full Greek alphabet to .convert function.
+
 CHANGES IN 0.4-6 (2012-06-19)
 -----------------------------
 Added xtable to suggests list.

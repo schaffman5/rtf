@@ -300,6 +300,18 @@ addPng(rtf, "foo.png", width=5, height=5)
 @
 
 
+\section{Table of Contents}
+The \texttt{rtf} package also supports creation of a Table of Contents.  This uses the TOC.level attribute of headers throughout the RTF document.  Note that some word processors, including Microsoft Word, will not automatically render the table of contents unless the field is updated.  When opening the file for the first time in Microsoft Word, it may be necessary to force the field to update by right clicking on it and choosing 'Update Field'.
+
+<<echo=true, results=hide, eval=false>>=
+addHeader(rtf,"Table of Contents")
+addTOC(rtf)
+
+addHeader(rtf,"Section 3",TOC.level=1)
+addHeader(rtf,"Section 3A",TOC.level=2)
+addHeader(rtf,"Section 3B",TOC.level=2)
+@
+
 
 \section{Output}
 When an RTF document is complete, you close and write the document with the \texttt{done} command.  It may take some time to run depending on the document complexity and number of figures.  It is also customary to include information about the \texttt{R} session in reports.  For this we use the \texttt{addSessionInfo} method.  For example, the following code creates a page break, adds nicely formatted session information, and writes the RTF document.

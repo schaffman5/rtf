@@ -27,6 +27,7 @@
 \alias{addPlot}
 \alias{addPng}
 \alias{addTrellisObject}
+\alias{addTOC}
 \alias{addSessionInfo}
 
 \alias{rtf.forest.plot.xscale}

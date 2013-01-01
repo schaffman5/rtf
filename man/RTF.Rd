@@ -55,6 +55,7 @@ extends \link[R.oo]{Object}\cr
  \tab \code{\link[rtf:addSessionInfo.RTF]{addSessionInfo}} \tab Insert session information into the RTF document.\cr
  \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Insert a table into the RTF document.\cr
  \tab \code{\link[rtf:addText.RTF]{addText}} \tab Insert text into the RTF document.\cr
+ \tab \code{\link[rtf:addTOC.RTF]{addTOC}} \tab Insert table of contents field.\cr
  \tab \code{\link[rtf:addTrellisObject.RTF]{addTrellisObject}} \tab Insert a trellis plot object into the RTF document.\cr
  \tab \code{\link[rtf:decreaseIndent.RTF]{decreaseIndent}} \tab Decrease RTF document indent.\cr
  \tab \code{\link[rtf:done.RTF]{done}} \tab Write and close the RTF output.\cr
