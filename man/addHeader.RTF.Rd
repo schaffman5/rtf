@@ -9,9 +9,7 @@
  \name{addHeader.RTF}
 \alias{addHeader.RTF}
 \alias{RTF.addHeader}
-\alias{addHeader.RTF}
 \alias{addHeader,RTF-method}
-
 
  \title{Insert a header into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert a header into the RTF document.
  }
 
- \usage{\method{addHeader}{RTF}(this, title, subtitle=NULL, font.size=NULL, TOC.level=NULL, ...)}
+ \usage{
+\method{addHeader}{RTF}(this, title, subtitle=NULL, font.size=NULL, TOC.level=NULL, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

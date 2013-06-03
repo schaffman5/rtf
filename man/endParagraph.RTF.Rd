@@ -9,9 +9,7 @@
  \name{endParagraph.RTF}
 \alias{endParagraph.RTF}
 \alias{RTF.endParagraph}
-\alias{endParagraph.RTF}
 \alias{endParagraph,RTF-method}
-
 
  \title{End a paragraph in the RTF document}
 
@@ -19,7 +17,9 @@
 	End a paragraph in the RTF document.
  }
 
- \usage{\method{endParagraph}{RTF}(this, ...)}
+ \usage{
+\method{endParagraph}{RTF}(this, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

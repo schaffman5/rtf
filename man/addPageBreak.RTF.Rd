@@ -9,9 +9,7 @@
  \name{addPageBreak.RTF}
 \alias{addPageBreak.RTF}
 \alias{RTF.addPageBreak}
-\alias{addPageBreak.RTF}
 \alias{addPageBreak,RTF-method}
-
 
  \title{Insert a page break into the RTF document optionally specifying new page settings}
 
@@ -19,7 +17,9 @@
 	Insert a page break into the RTF document optionally specifying new page settings.
  }
 
- \usage{\method{addPageBreak}{RTF}(this, width=8.5, height=11, omi=c(1, 1, 1, 1), ...)}
+ \usage{
+\method{addPageBreak}{RTF}(this, width=8.5, height=11, omi=c(1, 1, 1, 1), ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

@@ -9,9 +9,7 @@
  \name{addTrellisObject.RTF}
 \alias{addTrellisObject.RTF}
 \alias{RTF.addTrellisObject}
-\alias{addTrellisObject.RTF}
 \alias{addTrellisObject,RTF-method}
-
 
  \title{Insert a trellis plot object into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert a trellis plot object into the RTF document.
  }
 
- \usage{\method{addTrellisObject}{RTF}(this, trellis.object, width=3, height=0.3, res=300, rotate=NULL, ...)}
+ \usage{
+\method{addTrellisObject}{RTF}(this, trellis.object, width=3, height=0.3, res=300, rotate=NULL, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

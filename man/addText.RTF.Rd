@@ -9,9 +9,7 @@
  \name{addText.RTF}
 \alias{addText.RTF}
 \alias{RTF.addText}
-\alias{addText.RTF}
 \alias{addText,RTF-method}
-
 
  \title{Insert text into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert text into the RTF document.
  }
 
- \usage{\method{addText}{RTF}(this, ..., bold=FALSE, italic=FALSE)}
+ \usage{
+\method{addText}{RTF}(this, ..., bold=FALSE, italic=FALSE)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

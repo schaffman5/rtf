@@ -9,9 +9,7 @@
  \name{addPlot.RTF}
 \alias{addPlot.RTF}
 \alias{RTF.addPlot}
-\alias{addPlot.RTF}
 \alias{addPlot,RTF-method}
-
 
  \title{Insert a plot into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert a plot into the RTF document.
  }
 
- \usage{\method{addPlot}{RTF}(this, plot.fun=plot.fun, width=3, height=0.3, res=300, ...)}
+ \usage{
+\method{addPlot}{RTF}(this, plot.fun=plot.fun, width=3, height=0.3, res=300, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

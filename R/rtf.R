@@ -1102,6 +1102,37 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		# Total rows
 		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		
+	} else if ("matrix" %in% class(dat) & !is.null(attributes(dat)$"start cell")) {
+		start.row<-attributes(dat)$"start cell"[1]
+		
+		# convert matrix to data frame
+		dat<-as.data.frame(dat,stringsAsFactors=FALSE)
+		
+		# if no column widths are specified, then calculate optimal sizes that fit the page
+		if(is.null(col.widths) & !is.null(max.table.width)) {
+			col.widths <- .optimize.col.widths(dat,include.row.names=row.names,max.table.width=max.table.width,font.size=font.size)
+		}
+		
+		# render the header
+		nc<-ncol(dat)
+		if(is.null(col.widths)){ col.widths<-rep(6.5/nc,nc)}
+		
+		if(nrow(dat)>1) {
+			for(i in 1:(nrow(dat)-1)) {
+				if(i<start.row) {
+					border.top=FALSE
+					border.bottom=FALSE
+					if (i==1) { border.top=TRUE }
+					if (i==(start.row-1)) { border.bottom=TRUE }
+					ret<-paste(ret,.add.table.row(paste("\\b ",as.character(dat[i,])," \\b0",sep=""),col.widths,col.justify,font.size=font.size,indent=indent,border.top=border.top,border.bottom=border.bottom,space.before=space.before, space.after=space.after),sep="")
+
+				} else {
+					ret<-paste(ret,.add.table.row(as.character(dat[i,]),col.widths,col.justify,font.size=font.size,indent=indent, space.before=space.before, space.after=space.after),sep="")
+				}
+			}
+			ret<-paste(ret,.add.table.row(as.character(dat[nrow(dat),]),col.widths,col.justify,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
+		}
+	
 	} else if ("data.frame" %in% class(dat) || "matrix" %in% class(dat)) {
 		# convert matrix to data frame
 		if("matrix" %in% class(dat)) {
@@ -1126,6 +1157,8 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		if(row.names==TRUE){ nc<-nc+1 }
 		
 		if(is.null(col.widths)){ col.widths<-rep(6.5/nc,nc)}
+		
+		
 		if(row.names==TRUE){
 			ret<-paste(ret,.add.table.header.row(c(" ",colnames(dat)),col.widths,header.col.justify,font.size=font.size,repeat.header=TRUE,indent=indent),sep="")
 		} else {

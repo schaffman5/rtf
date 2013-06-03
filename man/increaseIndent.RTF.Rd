@@ -9,9 +9,7 @@
  \name{increaseIndent.RTF}
 \alias{increaseIndent.RTF}
 \alias{RTF.increaseIndent}
-\alias{increaseIndent.RTF}
 \alias{increaseIndent,RTF-method}
-
 
  \title{Increase RTF document indent}
 
@@ -19,7 +17,9 @@
 	Increase RTF document indent.
  }
 
- \usage{\method{increaseIndent}{RTF}(this, ...)}
+ \usage{
+\method{increaseIndent}{RTF}(this, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

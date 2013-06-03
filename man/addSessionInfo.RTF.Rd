@@ -9,9 +9,7 @@
  \name{addSessionInfo.RTF}
 \alias{addSessionInfo.RTF}
 \alias{RTF.addSessionInfo}
-\alias{addSessionInfo.RTF}
 \alias{addSessionInfo,RTF-method}
-
 
  \title{Insert session information into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert session information into the RTF document.
  }
 
- \usage{\method{addSessionInfo}{RTF}(this, locale=TRUE, ...)}
+ \usage{
+\method{addSessionInfo}{RTF}(this, locale=TRUE, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

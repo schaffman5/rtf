@@ -9,9 +9,7 @@
  \name{addTable.RTF}
 \alias{addTable.RTF}
 \alias{RTF.addTable}
-\alias{addTable.RTF}
 \alias{addTable,RTF-method}
-
 
  \title{Insert a table into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert a table into the RTF document.
  }
 
- \usage{\method{addTable}{RTF}(this, dat, col.widths=NULL, col.justify=NULL, header.col.justify=NULL, font.size=NULL, row.names=FALSE, NA.string="-", space.before=NULL, space.after=NULL, ...)}
+ \usage{
+\method{addTable}{RTF}(this, dat, col.widths=NULL, col.justify=NULL, header.col.justify=NULL, font.size=NULL, row.names=FALSE, NA.string="-", space.before=NULL, space.after=NULL, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

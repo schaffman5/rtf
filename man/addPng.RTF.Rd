@@ -9,9 +9,7 @@
  \name{addPng.RTF}
 \alias{addPng.RTF}
 \alias{RTF.addPng}
-\alias{addPng.RTF}
 \alias{addPng,RTF-method}
-
 
  \title{Insert an existing PNG image into the RTF document}
 
@@ -19,7 +17,9 @@
 	Insert an existing PNG image into the RTF document.
  }
 
- \usage{\method{addPng}{RTF}(this, file, width=3, height=0.3, ...)}
+ \usage{
+\method{addPng}{RTF}(this, file, width=3, height=0.3, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

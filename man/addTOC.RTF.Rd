@@ -9,9 +9,7 @@
  \name{addTOC.RTF}
 \alias{addTOC.RTF}
 \alias{RTF.addTOC}
-\alias{addTOC.RTF}
 \alias{addTOC,RTF-method}
-
 
  \title{Insert table of contents field}
 
@@ -19,7 +17,9 @@
 	Insert table of contents field.
  }
 
- \usage{\method{addTOC}{RTF}(this, ...)}
+ \usage{
+\method{addTOC}{RTF}(this, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

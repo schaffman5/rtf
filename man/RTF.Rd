@@ -32,7 +32,9 @@ extends \link[R.oo]{Object}\cr
 
  }
 
- \usage{RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)}
+ \usage{
+RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
+}
 
  \arguments{
  	\item{file}{The path of the output file.}

@@ -9,9 +9,7 @@
  \name{view.RTF}
 \alias{view.RTF}
 \alias{RTF.view}
-\alias{view.RTF}
 \alias{view,RTF-method}
-
 
  \title{View encoded RTF}
 
@@ -19,7 +17,9 @@
 	View encoded RTF.
  }
 
- \usage{\method{view}{RTF}(this, ...)}
+ \usage{
+\method{view}{RTF}(this, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}

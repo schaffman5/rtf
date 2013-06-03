@@ -9,9 +9,7 @@
  \name{setFontSize.RTF}
 \alias{setFontSize.RTF}
 \alias{RTF.setFontSize}
-\alias{setFontSize.RTF}
 \alias{setFontSize,RTF-method}
-
 
  \title{Set RTF document font size}
 
@@ -19,7 +17,9 @@
 	Set RTF document font size.
  }
 
- \usage{\method{setFontSize}{RTF}(this, font.size, ...)}
+ \usage{
+\method{setFontSize}{RTF}(this, font.size, ...)
+}
 
  \arguments{
  	\item{this}{An RTF object.}
