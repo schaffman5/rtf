@@ -17,7 +17,8 @@
  }
 
  \usage{
-rtf.forest.plot(x=1.25, min=0.5, max=2, xlim=c(0.1, 12), width=3, height=0.3, cex=1, lwd=0.75, res=300)
+rtf.forest.plot(x=1.25, min=0.5, max=2, xlim=c(0.1, 12), width=3, height=0.3, cex=1,
+  lwd=0.75, res=300)
 }
 
  \arguments{

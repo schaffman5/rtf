@@ -35,7 +35,7 @@
  done(rtf)
  }
 
- \author{Michael E. Schaffer}
+ \author{Michael Schaffer}
 
  \seealso{
  	For more information see \code{\link{RTF}}.

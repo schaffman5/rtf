@@ -44,7 +44,7 @@
   in reality.
 }
 
-\author{Michael E. Schaffer}
+\author{Michael Schaffer}
 
 
 \keyword{documentation}

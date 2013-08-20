@@ -1,8 +1,14 @@
-CHANGES IN 0.4-8 (2013-08-19)
+CHANGES IN 0.4-10 (2013-08-20)
 -----------------------------
 Changed imports to include R.methodsS3.
 Changed license to GPL.
 Moved gsubfn to Suggests instead of Depends.
+Removed dependency that forced X-windows start when the library was loaded.
+Removed 'methods' dependency (thanks to Henrik Bengtsson for help).
+
+CHANGES IN 0.4-9 (2013-08-18)
+-----------------------------
+Unreleased version.
 
 CHANGES IN 0.4-8 (2013-06-04)
 -----------------------------

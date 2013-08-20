@@ -55,9 +55,9 @@ RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
  \tab \code{\link[rtf:addPlot.RTF]{addPlot}} \tab Insert a plot into the RTF document.\cr
  \tab \code{\link[rtf:addPng.RTF]{addPng}} \tab Insert an existing PNG image into the RTF document.\cr
  \tab \code{\link[rtf:addSessionInfo.RTF]{addSessionInfo}} \tab Insert session information into the RTF document.\cr
+ \tab \code{\link[rtf:addTOC.RTF]{addTOC}} \tab Insert table of contents field.\cr
  \tab \code{\link[rtf:addTable.RTF]{addTable}} \tab Insert a table into the RTF document.\cr
  \tab \code{\link[rtf:addText.RTF]{addText}} \tab Insert text into the RTF document.\cr
- \tab \code{\link[rtf:addTOC.RTF]{addTOC}} \tab Insert table of contents field.\cr
  \tab \code{\link[rtf:addTrellisObject.RTF]{addTrellisObject}} \tab Insert a trellis plot object into the RTF document.\cr
  \tab \code{\link[rtf:decreaseIndent.RTF]{decreaseIndent}} \tab Decrease RTF document indent.\cr
  \tab \code{\link[rtf:done.RTF]{done}} \tab Write and close the RTF output.\cr
@@ -70,7 +70,8 @@ RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
 
 
  \bold{Methods inherited from Object}:\cr
-[[, [[<-, $, $<-, as.character, attach, attachLocally, clearCache, clearLookupCache, clone, detach, equals, extend, finalize, gc, getEnvironment, getFieldModifier, getFieldModifiers, getFields, getInstantiationTime, getStaticInstance, hasField, hashCode, ll, load, objectSize, print, registerFinalizer, save
+$, $<-, [[, [[<-, as.character, attach, attachLocally, clearCache, clearLookupCache, clone, detach, equals, extend, finalize, gc, getEnvironment, getFieldModifier, getFieldModifiers, getFields, getInstantiationTime, getStaticInstance, hasField, hashCode, ll, load, objectSize, print, registerFinalizer, save
+
 
  }
 
@@ -108,7 +109,7 @@ RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
  }
  }
 
- \author{Michael E. Schaffer}
+ \author{Michael Schaffer}
 
  \seealso{
  	For more information see \code{\link{RTF}}.

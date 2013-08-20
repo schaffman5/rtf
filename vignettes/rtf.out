@@ -1,0 +1,18 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Usage}{}% 2
+\BOOKMARK [1][-]{section.3}{Text}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Basic Text}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{New Lines}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Unicode and Greek Characters}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{URLs}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Mathematical Formulae}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.6}{RTF Code}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Formatting}{}% 10
+\BOOKMARK [1][-]{section.5}{Tables}{}% 11
+\BOOKMARK [1][-]{section.6}{Figures}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{base Plots}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.2}{lattice Plots}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.3}{ggplot2 Plots}{section.6}% 15
+\BOOKMARK [2][-]{subsection.6.4}{External Figures}{section.6}% 16
+\BOOKMARK [1][-]{section.7}{Table of Contents}{}% 17
+\BOOKMARK [1][-]{section.8}{Output}{}% 18

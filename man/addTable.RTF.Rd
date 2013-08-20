@@ -18,7 +18,9 @@
  }
 
  \usage{
-\method{addTable}{RTF}(this, dat, col.widths=NULL, col.justify=NULL, header.col.justify=NULL, font.size=NULL, row.names=FALSE, NA.string="-", space.before=NULL, space.after=NULL, ...)
+\method{addTable}{RTF}(this, dat, col.widths=NULL, col.justify=NULL, header.col.justify=NULL,
+  font.size=NULL, row.names=FALSE, NA.string="-", space.before=NULL, space.after=NULL,
+  ...)
 }
 
  \arguments{
@@ -47,7 +49,7 @@
  done(rtf)
  }
 
- \author{Michael E. Schaffer}
+ \author{Michael Schaffer}
 
  \seealso{
  	For more information see \code{\link{RTF}}.
