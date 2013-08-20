@@ -1,14 +1,14 @@
 Package: rtf
-Version: 0.4-8
-Date: 2013-01-28
+Version: 0.4-9
+Date: 2013-08-19
 Title: Rich Text Format (RTF) Output
 Author: Michael E. Schaffer
 Maintainer: Michael E. Schaffer <mschaff@gmail.com>
-Depends: R (>= 2.10.1), R.oo (>= 1.7.4), gsubfn
-Imports: methods
-Suggests: ggplot2, lattice, grid, xtable
+Depends: R (>= 2.10.1)
+Imports: methods, R.methodsS3, R.oo
+Suggests: ggplot2, lattice, grid, xtable, gsubfn
 Description: A set of R functions to output Rich Text Format (RTF) files with high resolution tables and graphics that may be edited with a standard word processor such as Microsoft Word.
-License: BSD
+License: GPL (>= 2)
 LazyLoad: TRUE
-Packaged: 2013-06-03 22:36:24 UTC; mschaff
-Date/Publication: 2012-08-22 19:00:00 UTC; mschaff
+Packaged: 2013-08-20 01:11:12 UTC; mschaff
+Date/Publication: 2013-08-19 19:00:00 UTC; mschaff

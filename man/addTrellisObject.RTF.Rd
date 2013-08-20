@@ -42,6 +42,7 @@
  }
 
  \examples{
+ \dontrun{
  rtf<-RTF("test_addTrellisObject.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
  if(require(lattice) & require(grid)) {
  	# multipage trellis object
@@ -49,6 +50,7 @@
  	addTrellisObject(rtf,trellis.object=p2,width=8,height=4,res=300, rotate=90)
  }
  done(rtf)
+ }
  }
 
  \author{Michael E. Schaffer}

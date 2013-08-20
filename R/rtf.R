@@ -1,9 +1,7 @@
 ##########################################################################################
 ## RTF Output Functions for R                                                            #
 ##                                                                                       # 
-## Author: Michael E. Schaffer, Ph.D.                                                    # 
-## Date:   2011/09/04                                                                    # 
-## Version: 0.4                                                                          #
+## Author: Michael E. Schaffer, Ph.D.                                                    #                                                                       #
 ##                                                                                       #
 ## Description:                                                                          #
 ## A set of R functions to output RTF files with high resolution graphics and tables.    #
@@ -47,6 +45,7 @@
 # }
 #
 # \examples{
+# \dontrun{
 # output<-"test_RTF-class.doc"
 # png.res<-300
 #
@@ -76,6 +75,7 @@
 # addSessionInfo(rtf)
 # 
 # done(rtf)
+# }
 # }
 #
 # @author
@@ -711,6 +711,7 @@ setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
 # }
 #
 # \examples{
+# \dontrun{
 # rtf<-RTF("test_addTrellisObject.doc",width=8.5,height=11,font.size=10,omi=c(1,1,1,1))
 # if(require(lattice) & require(grid)) {
 # 	# multipage trellis object
@@ -718,6 +719,7 @@ setMethodS3("addPng", "RTF", function(this,file,width=3.0,height=0.3, ...) {
 # 	addTrellisObject(rtf,trellis.object=p2,width=8,height=4,res=300, rotate=90)
 # }
 # done(rtf)
+# }
 # }
 #
 # @author
@@ -1102,7 +1104,7 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		# Total rows
 		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		
-	} else if ("matrix" %in% class(dat) & !is.null(attributes(dat)$"start cell")) {
+	} else if ("matrix" %in% class(dat) & !is.null(attributes(dat)$"start cell")) { # handle etables
 		start.row<-attributes(dat)$"start cell"[1]
 		
 		# convert matrix to data frame

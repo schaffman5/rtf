@@ -1,3 +1,9 @@
+CHANGES IN 0.4-8 (2013-08-19)
+-----------------------------
+Changed imports to include R.methodsS3.
+Changed license to GPL.
+Moved gsubfn to Suggests instead of Depends.
+
 CHANGES IN 0.4-8 (2013-06-04)
 -----------------------------
 Added support for etables.

@@ -75,6 +75,7 @@ RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
  }
 
  \examples{
+ \dontrun{
  output<-"test_RTF-class.doc"
  png.res<-300
 
@@ -104,6 +105,7 @@ RTF(file="", width=8.5, height=11, omi=c(1, 1, 1, 1), font.size=10)
  addSessionInfo(rtf)
 
  done(rtf)
+ }
  }
 
  \author{Michael E. Schaffer}
