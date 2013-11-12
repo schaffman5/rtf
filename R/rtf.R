@@ -1104,11 +1104,14 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 		# Total rows
 		ret<-paste(ret,.add.table.row(c("Total",paste(as.character(dat$col.margin),paste(" (",sprintf("%0.1f",dat$col.margin/grand.total*100),"%)",sep="")),as.character(grand.total)),col.widths,font.size=font.size,last.row=TRUE,indent=indent, space.before=space.before, space.after=space.after),sep="")
 		
-	} else if ("matrix" %in% class(dat) & !is.null(attributes(dat)$"start cell")) { # handle etables
+	# handle etables (etables are just matrices with a 'start cell' defined)
+	} else if ("matrix" %in% class(dat) & !is.null(attributes(dat)$"start cell")) { 
 		start.row<-attributes(dat)$"start cell"[1]
 		
 		# convert matrix to data frame
 		dat<-as.data.frame(dat,stringsAsFactors=FALSE)
+		dat[is.na(dat)] <- NA.string
+		dat[dat=="NA"] <- NA.string
 		
 		# if no column widths are specified, then calculate optimal sizes that fit the page
 		if(is.null(col.widths) & !is.null(max.table.width)) {

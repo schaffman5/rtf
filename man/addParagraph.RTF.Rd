@@ -26,7 +26,7 @@
  	\item{...}{A character \code{\link[base]{vector}} of text to add.}
  }
 
- \author{Michael Schaffer}
+ \author{Michael E. Schaffer}
 
  \seealso{
    For more information see \code{\link{RTF}}.

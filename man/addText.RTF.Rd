@@ -28,7 +28,7 @@
  	\item{...}{Any number of character strings to concatenate.}
  }
 
- \author{Michael Schaffer}
+ \author{Michael E. Schaffer}
 
  \seealso{
    For more information see \code{\link{RTF}}.

@@ -30,7 +30,7 @@
  	Output the content of the object as RTF code.
  }
 
- \author{Michael Schaffer}
+ \author{Michael E. Schaffer}
 
  \seealso{
  	For more information see \code{\link{RTF}}.

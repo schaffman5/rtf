@@ -1,3 +1,7 @@
+CHANGES IN 0.4-11 (2013-11-12)
+-----------------------------
+Changed to author to use Authors@R
+
 CHANGES IN 0.4-10 (2013-08-20)
 -----------------------------
 Changed imports to include R.methodsS3.

@@ -47,7 +47,7 @@
    For usage details \code{\link{RTF}}.
  }
 
- \author{Michael Schaffer}
+ \author{Michael E. Schaffer}
 
  \references{
  [1] \url{http://en.wikipedia.org/wiki/Rich_Text_Format}\cr
