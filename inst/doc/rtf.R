@@ -1,13 +1,13 @@
 ### R code from vignette source 'rtf.Rnw'
 
 ###################################################
-### code chunk number 1: rtf.Rnw:36-37
+### code chunk number 1: rtf.Rnw:37-38
 ###################################################
 library(rtf)
 
 
 ###################################################
-### code chunk number 2: rtf.Rnw:43-50
+### code chunk number 2: rtf.Rnw:44-51
 ###################################################
 output<-"rtf_vignette.doc"   # although this is RTF, we can use the
                              # .doc extension so it opens in MS Word
@@ -19,20 +19,20 @@ done(rtf)                    # writes and closes the file
 
 
 ###################################################
-### code chunk number 3: rtf.Rnw:61-63
+### code chunk number 3: rtf.Rnw:62-64
 ###################################################
 addHeader(rtf,title="Section Header",
 	      subtitle="This is the subheading or section text.")
 
 
 ###################################################
-### code chunk number 4: rtf.Rnw:68-69
+### code chunk number 4: rtf.Rnw:69-70
 ###################################################
 addParagraph(rtf,"This is a new self-contained paragraph.\n")
 
 
 ###################################################
-### code chunk number 5: rtf.Rnw:75-80
+### code chunk number 5: rtf.Rnw:76-81
 ###################################################
 startParagraph(rtf)
 addText(rtf,"This text was added with the addText command.  ")
@@ -42,43 +42,43 @@ endParagraph(rtf)
 
 
 ###################################################
-### code chunk number 6: rtf.Rnw:87-88
+### code chunk number 6: rtf.Rnw:88-89
 ###################################################
 addNewLine(rtf)
 
 
 ###################################################
-### code chunk number 7: rtf.Rnw:99-100
+### code chunk number 7: rtf.Rnw:100-101
 ###################################################
 addParagraph(rtf,"&Alpha; &Beta; &Gamma; &Delta; &Epsilon;\n\n")
 
 
 ###################################################
-### code chunk number 8: rtf.Rnw:105-106
+### code chunk number 8: rtf.Rnw:106-107
 ###################################################
 addParagraph(rtf,"&alpha; &beta; &gamma; &delta; &epsilon;\n\n")
 
 
 ###################################################
-### code chunk number 9: rtf.Rnw:112-113
+### code chunk number 9: rtf.Rnw:113-114
 ###################################################
 addParagraph(rtf,"\\u9829\\3 \\u9829\\3 \\u9829\\3\n\n")
 
 
 ###################################################
-### code chunk number 10: rtf.Rnw:133-134
+### code chunk number 10: rtf.Rnw:134-135
 ###################################################
 addParagraph(rtf,"Normal, \\b this is bold\\b0, normal.\n")
 
 
 ###################################################
-### code chunk number 11: rtf.Rnw:138-139
+### code chunk number 11: rtf.Rnw:139-140
 ###################################################
 addParagraph(rtf,"Normal, {\\b\\i bold-italic}, normal.\n")
 
 
 ###################################################
-### code chunk number 12: rtf.Rnw:158-160
+### code chunk number 12: rtf.Rnw:159-161
 ###################################################
 tab<-as.data.frame(head(iris)) # create a data.frame
 colnames(tab)<-gsub("\\."," ",colnames(tab)) # format column names
@@ -92,13 +92,13 @@ print(xtable(tab), table.placement = "!htbp")
 
 
 ###################################################
-### code chunk number 14: rtf.Rnw:168-169
+### code chunk number 14: rtf.Rnw:169-170
 ###################################################
 addTable(rtf,tab,font.size=9,row.names=FALSE,NA.string="-")
 
 
 ###################################################
-### code chunk number 15: rtf.Rnw:175-177
+### code chunk number 15: rtf.Rnw:176-178
 ###################################################
 tab<-table(iris$Species,floor(iris$Sepal.Length))
 names(dimnames(tab))<-c("Species","Sepal Length")
@@ -111,32 +111,32 @@ print(xtable(tab), table.placement = "!htbp")
 
 
 ###################################################
-### code chunk number 17: rtf.Rnw:185-187
+### code chunk number 17: rtf.Rnw:186-188
 ###################################################
 addTable(rtf,tab,font.size=10,row.names=TRUE,NA.string="-",
              col.widths=c(1,0.5,0.5,0.5,0.5) )
 
 
 ###################################################
-### code chunk number 18: rtf.Rnw:197-198 (eval = FALSE)
+### code chunk number 18: rtf.Rnw:198-199 (eval = FALSE)
 ###################################################
 ## addPlot(RTF.object, plot.fun=plot.fun, width=4, height=5, res=300, ...)
 
 
 ###################################################
-### code chunk number 19: rtf.Rnw:205-206
+### code chunk number 19: rtf.Rnw:206-207
 ###################################################
 plot(iris[,1],iris[,2])
 
 
 ###################################################
-### code chunk number 20: rtf.Rnw:211-212
+### code chunk number 20: rtf.Rnw:212-213
 ###################################################
 addPlot(rtf,plot.fun=plot,width=6,height=6,res=300, iris[,1],iris[,2])
 
 
 ###################################################
-### code chunk number 21: rtf.Rnw:217-224
+### code chunk number 21: rtf.Rnw:218-225
 ###################################################
 newPlot<-function() {
 	par(pty="s",cex=0.7)      # adjust plot style
@@ -148,13 +148,13 @@ newPlot()
 
 
 ###################################################
-### code chunk number 22: rtf.Rnw:229-230
+### code chunk number 22: rtf.Rnw:230-231
 ###################################################
 addPlot(rtf,plot.fun=newPlot,width=6,height=6,res=300)
 
 
 ###################################################
-### code chunk number 23: rtf.Rnw:238-241
+### code chunk number 23: rtf.Rnw:239-242
 ###################################################
 library(lattice)
 p <- histogram( ~ height | voice.part, data = singer, xlab="Height")
@@ -162,26 +162,26 @@ print(p)
 
 
 ###################################################
-### code chunk number 24: rtf.Rnw:246-247
+### code chunk number 24: rtf.Rnw:247-248
 ###################################################
 addPlot(rtf,plot.fun=print,width=5,height=5,res=300,p)
 
 
 ###################################################
-### code chunk number 25: rtf.Rnw:253-255
+### code chunk number 25: rtf.Rnw:254-256
 ###################################################
 p2 <- densityplot( ~ height | voice.part, data = singer, xlab = "Height")
 print(p2)
 
 
 ###################################################
-### code chunk number 26: rtf.Rnw:258-259
+### code chunk number 26: rtf.Rnw:259-260
 ###################################################
 addTrellisObject(rtf,trellis.object=p2,width=5,height=5,res=300)
 
 
 ###################################################
-### code chunk number 27: rtf.Rnw:263-266
+### code chunk number 27: rtf.Rnw:264-267
 ###################################################
 p3<-xyplot(uptake ~ conc | Plant, CO2, layout = c(2,2))
 print(p3) # note this is a multipage lattice plot
@@ -189,13 +189,13 @@ print(p3) # note this is a multipage lattice plot
 
 
 ###################################################
-### code chunk number 28: rtf.Rnw:269-270
+### code chunk number 28: rtf.Rnw:270-271
 ###################################################
 addTrellisObject(rtf,trellis.object=p3,width=6,height=6,res=300)
 
 
 ###################################################
-### code chunk number 29: rtf.Rnw:278-282
+### code chunk number 29: rtf.Rnw:279-283
 ###################################################
 # plot
 library(ggplot2)
@@ -204,19 +204,19 @@ print(mt)
 
 
 ###################################################
-### code chunk number 30: rtf.Rnw:290-291
+### code chunk number 30: rtf.Rnw:291-292
 ###################################################
 addPlot(rtf,plot.fun=print,width=5,height=4,res=300, mt)
 
 
 ###################################################
-### code chunk number 31: rtf.Rnw:298-299 (eval = FALSE)
+### code chunk number 31: rtf.Rnw:299-300 (eval = FALSE)
 ###################################################
 ## addPng(rtf, "foo.png", width=5, height=5)
 
 
 ###################################################
-### code chunk number 32: rtf.Rnw:306-312 (eval = FALSE)
+### code chunk number 32: rtf.Rnw:307-313 (eval = FALSE)
 ###################################################
 ## addHeader(rtf,"Table of Contents")
 ## addTOC(rtf)
@@ -227,7 +227,7 @@ addPlot(rtf,plot.fun=print,width=5,height=4,res=300, mt)
 
 
 ###################################################
-### code chunk number 33: rtf.Rnw:319-323
+### code chunk number 33: rtf.Rnw:320-324
 ###################################################
 addPageBreak(rtf, width=8.5, height=11, omi=c(1,1,1,1))
 

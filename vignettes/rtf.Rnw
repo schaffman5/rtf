@@ -16,6 +16,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \title{Vignette for the \texttt{rtf} Package}
 \author{Michael E. Schaffer}

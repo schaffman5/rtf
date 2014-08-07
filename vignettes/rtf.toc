@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {2}Usage}{2}{section.2}
+\contentsline {section}{\numberline {3}Text}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Basic Text}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}New Lines}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Unicode and Greek Characters}{3}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}URLs}{3}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Mathematical Formulae}{3}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}RTF Code}{4}{subsection.3.6}
+\contentsline {section}{\numberline {4}Formatting}{4}{section.4}
+\contentsline {section}{\numberline {5}Tables}{4}{section.5}
+\contentsline {section}{\numberline {6}Figures}{5}{section.6}
+\contentsline {subsection}{\numberline {6.1}\texttt {base} Plots}{5}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}\texttt {lattice} Plots}{7}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}\texttt {ggplot2} Plots}{10}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}External Figures}{11}{subsection.6.4}
+\contentsline {section}{\numberline {7}Table of Contents}{11}{section.7}
+\contentsline {section}{\numberline {8}Output}{12}{section.8}

@@ -841,18 +841,28 @@ setMethodS3("addSessionInfo", "RTF", function(this, locale = TRUE, ...) {
 ######################################################################################
 
 .start.rtf<-function(width=8.5,height=11,omi=c(1,1,1,1)) {
-	paste("{\\rtf1\\ansi\n\\deff",.add.font.table(),.add.paper.size(width=width,height=height),"\n",.add.page.margins(omi),"\n",.add.page.numbers(),"\n",sep="")
+	paste("{\\rtf1\\ansi\n\\deff",.add.font.table(),.add.color.table(),.add.paper.size(width=width,height=height),"\n",.add.page.margins(omi),"\n",.add.page.numbers(),"\n",sep="")
 }
 
 .add.font.table<-function() {
 	fonts<-character()
-	fonts[1]<-"{\\f1\\fswiss\\fcharset0 Helvetica;}"
+	fonts[1]<-"{\\f1\\fswiss\\fcharset0 Helvetica;}" # default
 	fonts[2]<-"{\\f2\\ffroman\\charset0\\fprg2 Times New Roman;}"
 	fonts[3]<-"{\\f3\\ffswiss\\charset0\\fprg2 Arial;}"
 	fonts[4]<-"{\\f4\\fftech\\charset0\\fprg2 Symbol;}"
 	fonts[5]<-"{\\f4\\ffroman\\charset0\\fprg2 Cambria;}"
 	
 	paste("{\\fonttbl",paste(fonts,collapse="\n"),"}",sep="\n")
+}
+
+.add.color.table<-function() {
+	colors<-character()
+	colors[1]<-"{\\red0\\green0\\blue0;}" # default
+	colors[2]<-"{\\red255\\green0\\blue0;}"
+	colors[3]<-"{\\red0\\green255\\blue0;}"
+	colors[4]<-"{\\red0\\green0\\blue255;}"
+	
+	paste("{\\colortbl",paste(colors,collapse="\n"),"}",sep="\n")
 }
 
 .add.page.numbers<-function() {
