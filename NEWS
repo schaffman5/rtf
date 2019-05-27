@@ -1,4 +1,9 @@
-CHANGES IN 0.4-13 (2014-08-07)
+CHANGES IN 0.4-14 (2019-05-26)
+-----------------------------
+Updated with R.oo suggestions from Henrik Bengtsson. Added README.md and 
+converted to RStudio project.
+
+CHANGES IN 0.4-13 (2018-05-16)
 -----------------------------
 Added explicit imports and exports to resolve CRAN checks.
 
