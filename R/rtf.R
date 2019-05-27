@@ -13,7 +13,7 @@
 ## http://latex2rtf.sourceforge.net/rtfspec_7.html#rtfspec_paraforprop                   #
 ## http://www.pindari.com/rtf2.html                                                      #
 ##                                                                                       #
-## For use as source file include: require(R.oo)                                         #
+## For use as source file include: library(R.oo)                                         #
 ##########################################################################################
 
 

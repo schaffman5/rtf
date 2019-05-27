@@ -1,5 +1,5 @@
-require(rtf)
-require(lattice)
+library(rtf)
+library(lattice)
 
 output<-"test_rtf-package.doc"
 png.res<-300

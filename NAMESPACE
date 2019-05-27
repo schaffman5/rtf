@@ -1,5 +1,5 @@
-import("R.methodsS3")
-import("R.oo")
+importFrom("R.methodsS3", "setMethodS3")
+importFrom("R.oo", "setConstructorS3", "extend", "Object")
 importFrom("grDevices", "dev.off", "png")
 importFrom("graphics", "abline", "arrows", "axTicks", "lines", "par", "plot", "points", "text")
 importFrom("utils", "sessionInfo")
